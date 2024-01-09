@@ -6,7 +6,7 @@ fetch(chuckNorrisKey, {
     return response.json();
 }).then(function(data) {
     console.log(data);
-    forecastEl.textContent = data.quote;
+    //forecastEl.textContent = data.quote;
 });
 
 fetch("https://api.chucknorris.io/jokes/random", {
@@ -15,10 +15,10 @@ fetch("https://api.chucknorris.io/jokes/random", {
     return response.json();
 }).then(function(data) {
     console.log(data);
-    forecastEl.textContent = forecastEl.textContent + "\n\n" + data.value;
+    //forecastEl.textContent = forecastEl.textContent + "\n\n" + data.value;
 });
 
-fetch("https://stoic.tekloon.net/stoic-quote", {
+/*fetch("https://stoic.tekloon.net/stoic-quote", {
     method: 'GET',
 }).then(function(response) {
     return response.json();
@@ -45,4 +45,4 @@ fetch(searchKey, {
     gifParent.append(gifHolder);
     //forecastEl.append(gifParent);
     console.log(data.data);
-});
+});*/

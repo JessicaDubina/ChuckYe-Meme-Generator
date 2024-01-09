@@ -1,11 +1,18 @@
 // DEVELOP TEST SECTION
+let kanyeQuoteEl = document.querySelector("#kanye-quote");
+let chuckQuoteEl = document.querySelector("#chuck-quote");
+let gifHolderEl = document.querySelector("#gif-holder");
+let selectedQuoteEl = document.querySelector("#selected-quote");
+
 var chuckNorrisKey = "https://api.kanye.rest";
 fetch(chuckNorrisKey, {
     method: 'GET',
 }).then(function(response) {
     return response.json();
 }).then(function(data) {
+    //Kanye quote here
     console.log(data);
+    kanyeQuoteEl.textContent = "Kanye: " + data.quote;
     //forecastEl.textContent = data.quote;
 });
 
@@ -14,7 +21,9 @@ fetch("https://api.chucknorris.io/jokes/random", {
 }).then(function(response) {
     return response.json();
 }).then(function(data) {
+    //Chuck quote here
     console.log(data);
+    chuckQuoteEl.textContent = "Chuck: " + data.value;
     //forecastEl.textContent = forecastEl.textContent + "\n\n" + data.value;
 });
 

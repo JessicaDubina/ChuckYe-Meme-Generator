@@ -69,6 +69,9 @@ fetch("https://api.chucknorris.io/jokes/random", {
 //request url : https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks
 
 var searchKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+
+var searchEndpointKey = "api.giphy.com/v1/gifs/search?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks?limit=20?q=" + dataObjectNames[2];
+
 fetch(searchKey, {
     method: 'GET',
 }).then(function(response) {

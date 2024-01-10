@@ -77,3 +77,36 @@ a:hover,a.active{
   height: 30rem;
   width: auto;
 }
+
+#selected-quote {
+  display: ;
+  position: relative;
+}
+
+.bottom-section {
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-section.figure {
+  display: flex;
+  margin: 1rem;
+  padding: 1rem;
+  height: 200px;
+  
+}
+
+.figure h3 {
+  display: flex;
+  font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.quote-options {
+  display: block;
+}
+
+.quote-options p {
+  padding: 1rem;
+}

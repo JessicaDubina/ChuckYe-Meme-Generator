@@ -35,7 +35,7 @@ fetch("https://api.chucknorris.io/jokes/random", {
     console.log(data);
     //forecastEl.textContent = forecastEl.textContent + "\n\n" + data.value;
 });
-
+*/
 //giphy api key = bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks
 //request url : https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks
 
@@ -54,4 +54,4 @@ fetch(searchKey, {
     gifParent.append(gifHolder);
     //forecastEl.append(gifParent);
     console.log(data.data);
-});*/
+});

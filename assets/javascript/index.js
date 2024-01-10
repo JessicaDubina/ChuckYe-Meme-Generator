@@ -82,6 +82,7 @@ fetch(searchKey, {
     //var link = document.createElement("a");
 
     console.log(data.data);
-    gifHolderEl.src = data.data[3].gif.images.downsized_large.url;
+    gifHolder.src = data.data[3].gif.images.downsized_large.url;
     gifParent.append(gifHolder);
+    gifHolderEl.append(gifParent);
 });

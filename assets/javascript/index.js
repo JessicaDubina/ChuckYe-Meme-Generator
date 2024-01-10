@@ -4,6 +4,9 @@ let chuckQuoteEl = document.querySelector("#chuck-quote");
 let gifHolderEl = document.querySelector("#gif-holder");
 let selectedQuoteEl = document.querySelector("#selected-quote");
 
+let index = 3;
+let holdData;
+
 let dataObjectNames = {
     0: "actions",
     1: "adjectives",
@@ -66,22 +69,36 @@ fetch("https://api.chucknorris.io/jokes/random", {
 });
 */
 //giphy api key = bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks
-//request url : https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks
 
-var searchKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+var searchCategoriesKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+var searchEndpointKey = "https://api.giphy.com/v1/gifs/search?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks?limit=20?q=" 
++ dataObjectNames[index];
 
-var searchEndpointKey = "api.giphy.com/v1/gifs/search?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks?limit=20?q=" + dataObjectNames[2];
+const AppendGifToPage = () => {
+    var check = document.querySelector(".gif-parent");
+    if(check) { check.remove(); }
+    var gifParent = document.createElement("div");
+    var gifHolder = document.createElement("img");
+    gifParent.classList.add("gif-parent");
+    gifHolder.src = holdData.data[index].gif.images.downsized_large.url;
+    gifParent.append(gifHolder);
+    gifHolderEl.append(gifParent);
+}
 
-fetch(searchKey, {
+fetch(searchCategoriesKey, {
     method: 'GET',
 }).then(function(response) {
     return response.json();
 }).then(function(data) {
-    var gifParent = document.createElement("div");
-    var gifHolder = document.createElement("img");
-    //var link = document.createElement("a");
-
-    console.log(data.data);
-    gifHolderEl.src = data.data[2].gif.images.downsized_large.url;
-    gifParent.append(gifHolder);
+    console.log(data);
+    holdData = data;
+    AppendGifToPage();
 });
+
+let CycleGif = setInterval(function() {
+    index++;
+    if(index > dataObjectNames.length) {
+        index = 0;
+    }
+    AppendGifToPage();
+}, 10000);

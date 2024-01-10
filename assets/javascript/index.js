@@ -79,8 +79,7 @@ const SetIndex = (input) => {
 }
 
 const FetchSearchData = () => {
-    //index = Math.floor(Math.random() * Object.keys(dataObjectNames).length);
-    index = 27;
+    index = Math.floor(Math.random() * Object.keys(dataObjectNames).length);
     searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
     + dataObjectNames[index] + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 

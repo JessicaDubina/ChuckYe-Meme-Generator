@@ -57,3 +57,23 @@ a:hover,a.active{
   background: #f1b4bb;
   transition: .5s;
 }
+
+#gif-holder {
+  margin: 2% 10%;
+  min-height: 30rem;
+  width: 80%;
+}
+
+#gif-holder div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: auto;
+}
+
+#gif-holder img {
+  border: .2rem solid var(--dark-blue-color);
+  height: 30rem;
+  width: auto;
+}

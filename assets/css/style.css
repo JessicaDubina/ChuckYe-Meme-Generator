@@ -20,7 +20,7 @@ body{
 }
 
 nav{
-  background: #132043;
+  background: var(--dark-blue-color);
   height: 80px;
   width: 100%
 }
@@ -54,7 +54,7 @@ nav ul li a{
 }
 
 a:hover,a.active{
-  background: #f1b4bb;
+  background: var(--pink-color);
   transition: .5s;
 }
 
@@ -110,19 +110,19 @@ a:hover,a.active{
 }
 
 #kanye img {
-  background-color: #72501f;
+  background-color: var(--brown-color);
 }
 
 #chuck img {
-  background-color: #f1b4bb;
+  background-color: var(--pink-color);
 }
 
 .bottom-section .color1 {
-  background-color: #72501F;
+  background-color: var(--brown-color);
 }
 
 .bottom-section .color2 {
-  background-color: #F1B4BB;
+  background-color: var(--pink-color);
 }
 
 .figure h3 {

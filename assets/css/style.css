@@ -82,7 +82,7 @@ a:hover,a.active{
   display: flex;
   position: absolute;
   justify-content: center;
-  padding-top: 27rem;
+  margin-top: 27rem;
   padding-left: 15rem;
   padding-right: 15rem;
   font-size: large;

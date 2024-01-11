@@ -3,6 +3,8 @@ let kanyeQuoteEl = document.querySelector("#kanye-quote");
 let chuckQuoteEl = document.querySelector("#chuck-quote");
 let gifHolderEl = document.querySelector("#gif-holder");
 let selectedQuoteEl = document.querySelector("#selected-quote");
+let chuckSelectEl = document.querySelector("#chuck-select");
+let kanyeSelectEl = document.querySelector("#kanye-select");
 
 let dataObjectNames = {
     0: "actions",
@@ -242,3 +244,11 @@ const HandleUserInput = () => {
 }
 
 GenerateContentButtons();
+
+chuckSelectEl.addEventListener("click", function() {
+    selectedQuoteEl.textContent = chuckQuoteEl.textContent;
+});
+
+kanyeSelectEl.addEventListener("click", function() {
+    selectedQuoteEl.textContent = kanyeQuoteEl.textContent;
+});

@@ -80,7 +80,13 @@ a:hover,a.active{
 
 #selected-quote {
   display: flex;
-  position: relative;
+  position: absolute;
+  justify-content: center;
+  padding-top: 27rem;
+  padding-left: 15rem;
+  padding-right: 15rem;
+  font-size: large;
+  color: var(--cream-color);
 }
 
 .bottom-section {
@@ -88,23 +94,35 @@ a:hover,a.active{
   justify-content: center;
 }
 
-.bottom-section.figure {
+.bottom-section .figure {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: start;
+}
+
+.bottom-section .figure img {
+  height: 200px;
+  width: 200px;
   margin: 1rem;
   padding: 1rem;
-  height: 200px;
-  
+  background-color: #132043;
 }
 
 .figure h3 {
   display: flex;
   font-size: 1.5rem;
   justify-content: center;
-  align-items: center;
+  align-items: end;
 }
 
 .quote-options {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-top: 2rem;
+  font-size: 1rem;
 }
 
 .quote-options p {

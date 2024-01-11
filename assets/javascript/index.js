@@ -3,8 +3,10 @@ let kanyeQuoteEl = document.querySelector("#kanye-quote");
 let chuckQuoteEl = document.querySelector("#chuck-quote");
 let gifHolderEl = document.querySelector("#gif-holder");
 let selectedQuoteEl = document.querySelector("#selected-quote");
+let chuckSelectEl = document.querySelector("#chuck-select");
+let kanyeSelectEl = document.querySelector("#kanye-select");
 
-let dataObjectNames = {
+let dataCategoryNames = {
     0: "actions",
     1: "adjectives",
     2: "animals",
@@ -33,6 +35,7 @@ let dataObjectNames = {
     25: "transportation",
     26: "tv",
     27: "weird",
+    28: "All",
 };
 
 /*fetch("https://stoic.tekloon.net/stoic-quote", {
@@ -58,7 +61,7 @@ const SetSearchParam = (input) => {
 let holdData;
 let index = 4;
 let searchLimit = 50;
-let searchQuestion = dataObjectNames[index];
+let searchQuestion = dataCategoryNames[index];
 
 const kanyeKey = "https://api.kanye.rest";
 const chuckKey = "https://api.chucknorris.io/jokes/random";
@@ -89,7 +92,7 @@ const FetchQuotes = () => {
 
 const FetchSearchData = () => {
     //randomize category?
-    //index = Math.floor(Math.random() * Object.keys(dataObjectNames).length);
+    //index = Math.floor(Math.random() * Object.keys(dataCategoryNames).length);
     searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
     + searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 
@@ -105,7 +108,7 @@ const FetchSearchData = () => {
 
     /*let CycleGif = setInterval(function() {
         index++;
-        if(index > dataObjectNames.length) { index = 0; }
+        if(index > dataCategoryNames.length) { index = 0; }
         AppendGifToPageAlt();
     }, 10000);*/
 }
@@ -123,7 +126,7 @@ const FetchCategoryData = () => {
 
     /*let CycleGif = setInterval(function() {
         index++;
-        if(index > dataObjectNames.length) { index = 0; }
+        if(index > dataCategoryNames.length) { index = 0; }
         AppendGifToPage();
     }, 10000);*/
 }
@@ -131,6 +134,8 @@ const FetchCategoryData = () => {
 const GenerateContentButtons = () => {
     console.log("GENERATING USER INPUT HANDLERS");
     var userInputDiv = document.createElement("div");
+    var selectorContainerEl = document.createElement("div");
+    var inputContainerEl = document.createElement("div");
     var buttonEl = document.createElement("button");
     var labelEl = document.createElement("label");
     var inputEl = document.createElement("input");
@@ -139,6 +144,8 @@ const GenerateContentButtons = () => {
     inputEl.setAttribute("name", "default-input");
     inputEl.setAttribute("type", "text");
     inputEl.setAttribute("placeholder", "animals");
+    selectorContainerEl.classList.add("container-div");
+    inputContainerEl.classList.add("container-div");
 
     labelEl.setAttribute("for", "default-input");
     labelEl.classList.add("label-style");
@@ -146,6 +153,7 @@ const GenerateContentButtons = () => {
 
     buttonEl.textContent = "Search!";
     buttonEl.classList.add("search-button");
+    buttonEl.classList.add("custom-button");
     buttonEl.addEventListener("click", function() {
         if(inputEl.value == "") { 
             console.log("No Search Param");
@@ -170,12 +178,12 @@ const GenerateContentButtons = () => {
     selectLabelEl.setAttribute("for", "category-selector");
     selectLabelEl.classList.add("label-style");
 
-    for(let i = 0; i < Object.keys(dataObjectNames).length; i++) {
+    for(let i = 0; i < Object.keys(dataCategoryNames).length; i++) {
         var optionEl = document.createElement("option");
-        var toUpper = dataObjectNames[i];
+        var toUpper = dataCategoryNames[i];
         toUpper = (toUpper.slice(0, 1)).toUpperCase() + toUpper.slice(1);
         
-        optionEl.setAttribute("value", dataObjectNames[i]);
+        optionEl.setAttribute("value", dataCategoryNames[i]);
         optionEl.textContent = toUpper;
         selectEl.append(optionEl);
     }
@@ -184,20 +192,23 @@ const GenerateContentButtons = () => {
         var passVal = this.value;
         console.log(passVal);
 
-        for(let i = 0; i < Object.keys(dataObjectNames).length; i++) {
-            if(passVal === dataObjectNames[i]) {
+        for(let i = 0; i < Object.keys(dataCategoryNames).length; i++) {
+            if(passVal === dataCategoryNames[i]) {
                 SetIndex(i);
                 HandleUserInput();
             }
         }
     });
     
-    userInputDiv.append(selectLabelEl);
-    userInputDiv.append(selectEl);
+    selectorContainerEl.append(selectLabelEl);
+    selectorContainerEl.append(selectEl);
+    userInputDiv.append(selectorContainerEl);
 
-    userInputDiv.append(labelEl);
-    userInputDiv.append(inputEl);
-    userInputDiv.append(buttonEl);
+    inputContainerEl.append(labelEl);
+    inputContainerEl.append(inputEl);
+    inputContainerEl.append(buttonEl);
+    userInputDiv.append(inputContainerEl);
+
     gifHolderEl.prepend(userInputDiv);
 }
 
@@ -234,3 +245,11 @@ const HandleUserInput = () => {
 }
 
 GenerateContentButtons();
+
+chuckSelectEl.addEventListener("click", function() {
+    selectedQuoteEl.textContent = chuckQuoteEl.textContent;
+});
+
+kanyeSelectEl.addEventListener("click", function() {
+    selectedQuoteEl.textContent = kanyeQuoteEl.textContent;
+});

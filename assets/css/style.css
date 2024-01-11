@@ -79,7 +79,7 @@ a:hover,a.active{
 }
 
 #selected-quote {
-  display: ;
+  display: flex;
   position: relative;
 }
 

@@ -35,8 +35,6 @@ let dataObjectNames = {
     27: "weird",
 };
 
-
-
 /*fetch("https://stoic.tekloon.net/stoic-quote", {
     method: 'GET',
 }).then(function(response) {
@@ -57,9 +55,9 @@ const SetSearchParam = (input) => {
     searchQuestion = input;
 }
 
+let holdData;
 let index = 4;
 let searchLimit = 50;
-let holdData;
 let searchQuestion = dataObjectNames[index];
 
 const kanyeKey = "https://api.kanye.rest";
@@ -143,9 +141,11 @@ const GenerateContentButtons = () => {
     inputEl.setAttribute("placeholder", "animals");
 
     labelEl.setAttribute("for", "default-input");
+    labelEl.classList.add("label-style");
     labelEl.textContent = "Search: ";
 
     buttonEl.textContent = "Search!";
+    buttonEl.classList.add("search-button");
     buttonEl.addEventListener("click", function() {
         if(inputEl.value == "") { 
             console.log("No Search Param");
@@ -165,9 +165,10 @@ const GenerateContentButtons = () => {
     var selectEl = document.createElement("select");
     selectLabelEl.textContent = "Choose Category: ";
 
-    selectEl.setAttribute("name", "category-selector");
     selectEl.setAttribute("id", "category-selector");
+    selectEl.setAttribute("name", "category-selector");
     selectLabelEl.setAttribute("for", "category-selector");
+    selectLabelEl.classList.add("label-style");
 
     for(let i = 0; i < Object.keys(dataObjectNames).length; i++) {
         var optionEl = document.createElement("option");

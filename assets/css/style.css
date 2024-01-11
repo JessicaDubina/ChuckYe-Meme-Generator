@@ -102,8 +102,8 @@ a:hover,a.active{
 }
 
 .bottom-section .figure img {
-  height: 200px;
-  width: 200px;
+  height: auto;
+  width: auto;
   margin: 1rem;
   padding: 1rem;
   background-color: #132043;

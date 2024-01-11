@@ -49,15 +49,6 @@ let dataCategoryNames = {
 */
 //giphy api key = bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks
 
-const SetIndex = (input) => {
-    index = input;
-    console.log("Index Set: " + index);
-}
-
-const SetSearchParam = (input) => {
-    searchQuestion = input;
-}
-
 let holdData;
 let index = 4;
 let searchLimit = 50;
@@ -70,6 +61,30 @@ var searchCategoriesKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFr
 var searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
 + searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 
+const SetIndex = (input) => {
+    index = input;
+    console.log("Index Set: " + index);
+}
+
+const SetSearchParam = (input) => {
+    searchQuestion = input;
+}
+
+<<<<<<< HEAD
+=======
+let holdData;
+let index = 4;
+let searchLimit = 50;
+let searchQuestion = dataCategoryNames[index];
+
+const kanyeKey = "https://api.kanye.rest";
+const chuckKey = "https://api.chucknorris.io/jokes/random";
+var randomEndpointKey = "https://api.giphy.com/v1/gifs/random"
+var searchCategoriesKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+var searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
++ searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+
+>>>>>>> 38898151d5aaa55438eafc8ad34604e63099ed90
 const FetchQuotes = () => {
     fetch(kanyeKey, {
         method: 'GET',
@@ -159,6 +174,7 @@ const GenerateContentButtons = () => {
             console.log("No Search Param");
             return; 
         }
+
         searchQuestion = inputEl.value;
         HandleUserInput();
     });
@@ -194,6 +210,12 @@ const GenerateContentButtons = () => {
 
         for(let i = 0; i < Object.keys(dataCategoryNames).length; i++) {
             if(passVal === dataCategoryNames[i]) {
+<<<<<<< HEAD
+                if(passVal === "all") {
+                    //Search all categories
+                }
+=======
+>>>>>>> 38898151d5aaa55438eafc8ad34604e63099ed90
                 SetIndex(i);
                 HandleUserInput();
             }

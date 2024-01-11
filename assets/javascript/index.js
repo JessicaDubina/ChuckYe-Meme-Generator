@@ -3,6 +3,8 @@ let kanyeQuoteEl = document.querySelector("#kanye-quote");
 let chuckQuoteEl = document.querySelector("#chuck-quote");
 let gifHolderEl = document.querySelector("#gif-holder");
 let selectedQuoteEl = document.querySelector("#selected-quote");
+let chuckSelectEl = document.querySelector("#chuck-select");
+let kanyeSelectEl = document.querySelector("#kanye-select");
 
 let dataCategoryNames = {
     0: "actions",
@@ -33,7 +35,11 @@ let dataCategoryNames = {
     25: "transportation",
     26: "tv",
     27: "weird",
+<<<<<<< HEAD
     28: "all",
+=======
+    28: "All",
+>>>>>>> 38898151d5aaa55438eafc8ad34604e63099ed90
 };
 
 /*fetch("https://stoic.tekloon.net/stoic-quote", {
@@ -68,6 +74,21 @@ const SetSearchParam = (input) => {
     searchQuestion = input;
 }
 
+<<<<<<< HEAD
+=======
+let holdData;
+let index = 4;
+let searchLimit = 50;
+let searchQuestion = dataCategoryNames[index];
+
+const kanyeKey = "https://api.kanye.rest";
+const chuckKey = "https://api.chucknorris.io/jokes/random";
+var randomEndpointKey = "https://api.giphy.com/v1/gifs/random"
+var searchCategoriesKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+var searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
++ searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+
+>>>>>>> 38898151d5aaa55438eafc8ad34604e63099ed90
 const FetchQuotes = () => {
     fetch(kanyeKey, {
         method: 'GET',
@@ -132,6 +153,8 @@ const FetchCategoryData = () => {
 const GenerateContentButtons = () => {
     console.log("GENERATING USER INPUT HANDLERS");
     var userInputDiv = document.createElement("div");
+    var selectorContainerEl = document.createElement("div");
+    var inputContainerEl = document.createElement("div");
     var buttonEl = document.createElement("button");
     var labelEl = document.createElement("label");
     var inputEl = document.createElement("input");
@@ -140,6 +163,8 @@ const GenerateContentButtons = () => {
     inputEl.setAttribute("name", "default-input");
     inputEl.setAttribute("type", "text");
     inputEl.setAttribute("placeholder", "animals");
+    selectorContainerEl.classList.add("container-div");
+    inputContainerEl.classList.add("container-div");
 
     labelEl.setAttribute("for", "default-input");
     labelEl.classList.add("label-style");
@@ -147,6 +172,7 @@ const GenerateContentButtons = () => {
 
     buttonEl.textContent = "Search!";
     buttonEl.classList.add("search-button");
+    buttonEl.classList.add("custom-button");
     buttonEl.addEventListener("click", function() {
         if(inputEl.value == "") { 
             console.log("No Search Param");
@@ -188,21 +214,27 @@ const GenerateContentButtons = () => {
 
         for(let i = 0; i < Object.keys(dataCategoryNames).length; i++) {
             if(passVal === dataCategoryNames[i]) {
+<<<<<<< HEAD
                 if(passVal === "all") {
                     //Search all categories
                 }
+=======
+>>>>>>> 38898151d5aaa55438eafc8ad34604e63099ed90
                 SetIndex(i);
                 HandleUserInput();
             }
         }
     });
     
-    userInputDiv.append(selectLabelEl);
-    userInputDiv.append(selectEl);
+    selectorContainerEl.append(selectLabelEl);
+    selectorContainerEl.append(selectEl);
+    userInputDiv.append(selectorContainerEl);
 
-    userInputDiv.append(labelEl);
-    userInputDiv.append(inputEl);
-    userInputDiv.append(buttonEl);
+    inputContainerEl.append(labelEl);
+    inputContainerEl.append(inputEl);
+    inputContainerEl.append(buttonEl);
+    userInputDiv.append(inputContainerEl);
+
     gifHolderEl.prepend(userInputDiv);
 }
 
@@ -239,3 +271,11 @@ const HandleUserInput = () => {
 }
 
 GenerateContentButtons();
+
+chuckSelectEl.addEventListener("click", function() {
+    selectedQuoteEl.textContent = chuckQuoteEl.textContent;
+});
+
+kanyeSelectEl.addEventListener("click", function() {
+    selectedQuoteEl.textContent = kanyeQuoteEl.textContent;
+});

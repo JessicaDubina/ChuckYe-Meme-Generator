@@ -104,9 +104,25 @@ a:hover,a.active{
 .bottom-section .figure img {
   height: 200px;
   width: 200px;
+  object-fit: cover;
   margin: 1rem;
   padding: 1rem;
-  background-color: #132043;
+}
+
+#kanye img {
+  background-color: #72501f;
+}
+
+#chuck img {
+  background-color: #f1b4bb;
+}
+
+.bottom-section .color1 {
+  background-color: #72501F;
+}
+
+.bottom-section .color2 {
+  background-color: #F1B4BB;
 }
 
 .figure h3 {

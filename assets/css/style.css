@@ -5,6 +5,7 @@
   --dark-blue-color: #132043;
   --light-teal-color: #B4F1EA;
   --brown-color: #72501F;
+  --border-radius: 15px;
 }
 
 *{
@@ -22,7 +23,7 @@ body{
 nav{
   background: var(--dark-blue-color);
   height: 80px;
-  width: 100%
+  width: 100%;
 }
 
 label.logo{
@@ -67,7 +68,7 @@ a:hover,a.active{
 #gif-holder div {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   height: auto;
   width: auto;
 }
@@ -83,6 +84,23 @@ a:hover,a.active{
   font-weight: bolder;
   padding: .5rem;
   margin: 0 .5rem;
+}
+
+.search-button {
+  margin: 0 .5rem;
+  padding: 0 .5rem;
+}
+
+.custom-button {
+  border-radius: var(--border-radius);
+  background-color: var(--light-teal-color);
+  border-width: 1px;
+  padding: 0 1rem;
+}
+
+.custom-button:hover {
+  background-color: white;
+  transition-duration: 1s;
 }
 
 #selected-quote {

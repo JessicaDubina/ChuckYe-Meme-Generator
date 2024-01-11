@@ -131,6 +131,8 @@ const FetchCategoryData = () => {
 const GenerateContentButtons = () => {
     console.log("GENERATING USER INPUT HANDLERS");
     var userInputDiv = document.createElement("div");
+    var selectorContainerEl = document.createElement("div");
+    var inputContainerEl = document.createElement("div");
     var buttonEl = document.createElement("button");
     var labelEl = document.createElement("label");
     var inputEl = document.createElement("input");
@@ -139,6 +141,8 @@ const GenerateContentButtons = () => {
     inputEl.setAttribute("name", "default-input");
     inputEl.setAttribute("type", "text");
     inputEl.setAttribute("placeholder", "animals");
+    selectorContainerEl.classList.add("container-div");
+    inputContainerEl.classList.add("container-div");
 
     labelEl.setAttribute("for", "default-input");
     labelEl.classList.add("label-style");
@@ -146,6 +150,7 @@ const GenerateContentButtons = () => {
 
     buttonEl.textContent = "Search!";
     buttonEl.classList.add("search-button");
+    buttonEl.classList.add("custom-button");
     buttonEl.addEventListener("click", function() {
         if(inputEl.value == "") { 
             console.log("No Search Param");
@@ -192,12 +197,15 @@ const GenerateContentButtons = () => {
         }
     });
     
-    userInputDiv.append(selectLabelEl);
-    userInputDiv.append(selectEl);
+    selectorContainerEl.append(selectLabelEl);
+    selectorContainerEl.append(selectEl);
+    userInputDiv.append(selectorContainerEl);
 
-    userInputDiv.append(labelEl);
-    userInputDiv.append(inputEl);
-    userInputDiv.append(buttonEl);
+    inputContainerEl.append(labelEl);
+    inputContainerEl.append(inputEl);
+    inputContainerEl.append(buttonEl);
+    userInputDiv.append(inputContainerEl);
+
     gifHolderEl.prepend(userInputDiv);
 }
 

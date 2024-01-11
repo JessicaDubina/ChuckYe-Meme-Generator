@@ -4,7 +4,7 @@ let chuckQuoteEl = document.querySelector("#chuck-quote");
 let gifHolderEl = document.querySelector("#gif-holder");
 let selectedQuoteEl = document.querySelector("#selected-quote");
 
-let dataObjectNames = {
+let dataCategoryNames = {
     0: "actions",
     1: "adjectives",
     2: "animals",
@@ -33,6 +33,7 @@ let dataObjectNames = {
     25: "transportation",
     26: "tv",
     27: "weird",
+    28: "all",
 };
 
 /*fetch("https://stoic.tekloon.net/stoic-quote", {
@@ -46,6 +47,18 @@ let dataObjectNames = {
 */
 //giphy api key = bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks
 
+let holdData;
+let index = 4;
+let searchLimit = 50;
+let searchQuestion = dataCategoryNames[index];
+
+const kanyeKey = "https://api.kanye.rest";
+const chuckKey = "https://api.chucknorris.io/jokes/random";
+var randomEndpointKey = "https://api.giphy.com/v1/gifs/random"
+var searchCategoriesKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+var searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
++ searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+
 const SetIndex = (input) => {
     index = input;
     console.log("Index Set: " + index);
@@ -54,18 +67,6 @@ const SetIndex = (input) => {
 const SetSearchParam = (input) => {
     searchQuestion = input;
 }
-
-let holdData;
-let index = 4;
-let searchLimit = 50;
-let searchQuestion = dataObjectNames[index];
-
-const kanyeKey = "https://api.kanye.rest";
-const chuckKey = "https://api.chucknorris.io/jokes/random";
-var randomEndpointKey = "https://api.giphy.com/v1/gifs/random"
-var searchCategoriesKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
-var searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
-+ searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 
 const FetchQuotes = () => {
     fetch(kanyeKey, {
@@ -89,7 +90,7 @@ const FetchQuotes = () => {
 
 const FetchSearchData = () => {
     //randomize category?
-    //index = Math.floor(Math.random() * Object.keys(dataObjectNames).length);
+    //index = Math.floor(Math.random() * Object.keys(dataCategoryNames).length);
     searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
     + searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 
@@ -105,7 +106,7 @@ const FetchSearchData = () => {
 
     /*let CycleGif = setInterval(function() {
         index++;
-        if(index > dataObjectNames.length) { index = 0; }
+        if(index > dataCategoryNames.length) { index = 0; }
         AppendGifToPageAlt();
     }, 10000);*/
 }
@@ -123,7 +124,7 @@ const FetchCategoryData = () => {
 
     /*let CycleGif = setInterval(function() {
         index++;
-        if(index > dataObjectNames.length) { index = 0; }
+        if(index > dataCategoryNames.length) { index = 0; }
         AppendGifToPage();
     }, 10000);*/
 }
@@ -151,6 +152,7 @@ const GenerateContentButtons = () => {
             console.log("No Search Param");
             return; 
         }
+
         searchQuestion = inputEl.value;
         HandleUserInput();
     });
@@ -170,12 +172,12 @@ const GenerateContentButtons = () => {
     selectLabelEl.setAttribute("for", "category-selector");
     selectLabelEl.classList.add("label-style");
 
-    for(let i = 0; i < Object.keys(dataObjectNames).length; i++) {
+    for(let i = 0; i < Object.keys(dataCategoryNames).length; i++) {
         var optionEl = document.createElement("option");
-        var toUpper = dataObjectNames[i];
+        var toUpper = dataCategoryNames[i];
         toUpper = (toUpper.slice(0, 1)).toUpperCase() + toUpper.slice(1);
         
-        optionEl.setAttribute("value", dataObjectNames[i]);
+        optionEl.setAttribute("value", dataCategoryNames[i]);
         optionEl.textContent = toUpper;
         selectEl.append(optionEl);
     }
@@ -184,8 +186,11 @@ const GenerateContentButtons = () => {
         var passVal = this.value;
         console.log(passVal);
 
-        for(let i = 0; i < Object.keys(dataObjectNames).length; i++) {
-            if(passVal === dataObjectNames[i]) {
+        for(let i = 0; i < Object.keys(dataCategoryNames).length; i++) {
+            if(passVal === dataCategoryNames[i]) {
+                if(passVal === "all") {
+                    //Search all categories
+                }
                 SetIndex(i);
                 HandleUserInput();
             }

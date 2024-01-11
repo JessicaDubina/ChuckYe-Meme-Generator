@@ -35,11 +35,7 @@ let dataCategoryNames = {
     25: "transportation",
     26: "tv",
     27: "weird",
-<<<<<<< HEAD
-    28: "all",
-=======
     28: "All",
->>>>>>> 38898151d5aaa55438eafc8ad34604e63099ed90
 };
 
 /*fetch("https://stoic.tekloon.net/stoic-quote", {

@@ -82,11 +82,12 @@ a:hover,a.active{
   display: flex;
   position: absolute;
   justify-content: center;
-  padding-top: 27rem;
+  padding-top: 17rem;
   padding-left: 15rem;
   padding-right: 15rem;
   font-size: large;
   color: var(--cream-color);
+  margin-top: 10rem;
 }
 
 .bottom-section {

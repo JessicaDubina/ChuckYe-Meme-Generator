@@ -3,8 +3,10 @@ let kanyeQuoteEl = document.querySelector("#kanye-quote");
 let chuckQuoteEl = document.querySelector("#chuck-quote");
 let gifHolderEl = document.querySelector("#gif-holder");
 let selectedQuoteEl = document.querySelector("#selected-quote");
+let chuckSelectEl = document.querySelector("#chuck-select");
+let kanyeSelectEl = document.querySelector("#kanye-select");
 
-let dataObjectNames = {
+let dataCategoryNames = {
     0: "actions",
     1: "adjectives",
     2: "animals",
@@ -33,6 +35,7 @@ let dataObjectNames = {
     25: "transportation",
     26: "tv",
     27: "weird",
+    28: "All",
 };
 
 /*fetch("https://stoic.tekloon.net/stoic-quote", {
@@ -57,7 +60,6 @@ var randomEndpointKey = "https://api.giphy.com/v1/gifs/random"
 var searchCategoriesKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 var searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
 + searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
-
 var searchtrendingKey ="https://api.giphy.com/v1/trending/searches?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 
 const SetIndex = (input) => {
@@ -91,7 +93,7 @@ const FetchQuotes = () => {
 
 const FetchSearchData = () => {
     //randomize category?
-    //index = Math.floor(Math.random() * Object.keys(dataObjectNames).length);
+    //index = Math.floor(Math.random() * Object.keys(dataCategoryNames).length);
     searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
     + searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 
@@ -107,7 +109,7 @@ const FetchSearchData = () => {
 
     /*let CycleGif = setInterval(function() {
         index++;
-        if(index > dataObjectNames.length) { index = 0; }
+        if(index > dataCategoryNames.length) { index = 0; }
         AppendGifToPageAlt();
     }, 10000);*/
 }
@@ -125,7 +127,7 @@ const FetchCategoryData = () => {
 
     /*let CycleGif = setInterval(function() {
         index++;
-        if(index > dataObjectNames.length) { index = 0; }
+        if(index > dataCategoryNames.length) { index = 0; }
         AppendGifToPage();
     }, 10000);*/
 }
@@ -158,6 +160,8 @@ const GenerateContentButtons = () => {
     inputEl.setAttribute("name", "default-input");
     inputEl.setAttribute("type", "text");
     inputEl.setAttribute("placeholder", "animals");
+    selectorContainerEl.classList.add("container-div");
+    inputContainerEl.classList.add("container-div");
 
     selectorContainerEl.classList.add("container-div");
     inputContainerEl.classList.add("container-div");
@@ -173,11 +177,13 @@ const GenerateContentButtons = () => {
 
     buttonEl.textContent = "Search!";
     buttonEl.classList.add("search-button");
+    buttonEl.classList.add("custom-button");
     buttonEl.addEventListener("click", function() {
         if(inputEl.value == "") { 
             console.log("No Search Param");
             return; 
         }
+
         searchQuestion = inputEl.value;
         HandleUserInput();
     });
@@ -200,12 +206,12 @@ const GenerateContentButtons = () => {
     selectLabelEl.setAttribute("for", "category-selector");
     selectLabelEl.classList.add("label-style");
 
-    for(let i = 0; i < Object.keys(dataObjectNames).length; i++) {
+    for(let i = 0; i < Object.keys(dataCategoryNames).length; i++) {
         var optionEl = document.createElement("option");
-        var toUpper = dataObjectNames[i];
+        var toUpper = dataCategoryNames[i];
         toUpper = (toUpper.slice(0, 1)).toUpperCase() + toUpper.slice(1);
         
-        optionEl.setAttribute("value", dataObjectNames[i]);
+        optionEl.setAttribute("value", dataCategoryNames[i]);
         optionEl.textContent = toUpper;
         selectEl.append(optionEl);
     }
@@ -230,13 +236,16 @@ const GenerateContentButtons = () => {
     selectorContainerEl.append(selectLabelEl);
     selectorContainerEl.append(selectEl);
     userInputDiv.append(selectorContainerEl);
+
     trendingContainerEl.append(trendingLabelEl);
     trendingContainerEl.append(trendingEl);
     userInputDiv.append(trendingContainerEl);
+
     inputContainerEl.append(labelEl);
     inputContainerEl.append(inputEl);
     inputContainerEl.append(buttonEl);
     userInputDiv.append(inputContainerEl);
+
     gifHolderEl.prepend(userInputDiv);
 }
 
@@ -277,3 +286,11 @@ const HandleUserInput = () => {
 }
 
 GenerateContentButtons();
+
+chuckSelectEl.addEventListener("click", function() {
+    selectedQuoteEl.textContent = chuckQuoteEl.textContent;
+});
+
+kanyeSelectEl.addEventListener("click", function() {
+    selectedQuoteEl.textContent = kanyeQuoteEl.textContent;
+});

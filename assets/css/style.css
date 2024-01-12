@@ -126,6 +126,7 @@ a:hover,a.active{
   color: var(--dark-blue-color);
   background-color: var(--cream-color);
   overflow: hidden;
+  font-family: 'Poppins', sans-serif;
 }
 
 .bottom-section {
@@ -182,4 +183,5 @@ a:hover,a.active{
 
 .quote-options p {
   padding: 1rem;
+  font-family: 'Poppins', sans-serif;
 }

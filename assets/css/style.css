@@ -8,18 +8,6 @@
   --border-radius: 15px;
 }
 
-.lemon-regular {
-  font-family: "Lemon", serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.shadows-into light-regular {
-  font-family: "Shadows Into Light", cursive;
-  font-weight: 400;
-  font-style: normal;
-}
-
 *{
   padding: 0;
   margin: 0;
@@ -32,7 +20,15 @@ body{
   font-family: "Lemon";
 }
 
+header {
+  background-color: var(--dark-blue-color);
+  overflow: hidden;
+}
+
 nav{
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   background: var(--dark-blue-color);
   height: 80px;
   width: 100%;
@@ -47,8 +43,8 @@ label.logo{
 }
 
 nav ul{
-  float: right;
-  margin-right: 20px;
+  padding-right: 10%;
+  background: var(--dark-blue-color);
 }
 
 nav ul li{
@@ -71,6 +67,7 @@ a:hover,a.active{
   transition: .5s;
 }
 
+
 #gif-holder {
   margin: 2% 10%;
   min-height: 30rem;
@@ -82,7 +79,7 @@ a:hover,a.active{
   align-items: center;
   justify-content: space-evenly;
   height: auto;
-  width: auto;
+  width: 100%;
 }
 
 #gif-holder img {
@@ -120,8 +117,6 @@ a:hover,a.active{
   position: absolute;
   justify-content: center;
   margin-top: 27rem;
-  padding-left: 15rem;
-  padding-right: 15rem;
   font-size: large;
   color: var(--dark-blue-color);
   background-color: var(--cream-color);
@@ -142,15 +137,17 @@ a:hover,a.active{
 }
 
 .bottom-section .figure img {
-  height: 200px;
-  width: 200px;
+  height: 90%;
+  width: 90%;
   object-fit: cover;
-  margin: 1rem;
-  padding: 1rem;
+  margin: 5%;
+  padding: 5%;
 }
 
 #kanye img {
+  display: flex;
   background-color: var(--brown-color);
+  justify-content: center;
 }
 
 #chuck img {

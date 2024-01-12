@@ -181,3 +181,9 @@ a:hover,a.active{
 .quote-options p {
   padding: 1rem;
 }
+
+.local-storage {
+  height: 80%;
+  width: 80%;
+  overflow-y: scroll;
+}

@@ -235,9 +235,11 @@ const AppendGifToPageAlt = () => {
     var gifHolder = document.createElement("img");
     var random = Math.floor(Math.random() * holdData.data.length);
     console.log(index + " : " + random);
-
+    
+    let img = new Image();
     gifHolder.src = holdData.data[random].images.downsized_large.url;
-
+    console.log()
+    
     gifParent.classList.add("gif-parent");
     gifParent.append(gifHolder);
     gifHolderEl.append(gifParent);

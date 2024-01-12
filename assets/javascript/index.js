@@ -60,6 +60,7 @@ var randomEndpointKey = "https://api.giphy.com/v1/gifs/random"
 var searchCategoriesKey = "https://api.giphy.com/v1/gifs/categories?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 var searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLimit + "&q=" 
 + searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
+var searchtrendingKey ="https://api.giphy.com/v1/trending/searches?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 
 const SetIndex = (input) => {
     index = input;
@@ -77,7 +78,7 @@ const FetchQuotes = () => {
         return response.json();
     }).then(function(data) {
         //Kanye quote here
-        kanyeQuoteEl.textContent = "Kanye Says: " + data.quote;
+        kanyeQuoteEl.textContent = data.quote;
     });
     
     fetch(chuckKey, {
@@ -86,7 +87,7 @@ const FetchQuotes = () => {
         return response.json();
     }).then(function(data) {
         //Chuck quote here
-        chuckQuoteEl.textContent = "Chuck Says: " + data.value;
+        chuckQuoteEl.textContent = data.value;
     });
 }
 
@@ -131,13 +132,28 @@ const FetchCategoryData = () => {
     }, 10000);*/
 }
 
+const FetchTrendingData = () => {
+    fetch(searchtrendingKey, {
+        method: 'GET',
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        console.log(data);
+        holdData = data;
+        HandleTrendingData();
+    });
+}
+
 const GenerateContentButtons = () => {
     console.log("GENERATING USER INPUT HANDLERS");
     var userInputDiv = document.createElement("div");
     var selectorContainerEl = document.createElement("div");
     var inputContainerEl = document.createElement("div");
+    var trendingContainerEl = document.createElement("div");
     var buttonEl = document.createElement("button");
+    var trendingEl = document.createElement("button");
     var labelEl = document.createElement("label");
+    var trendingLabelEl = document.createElement("label");
     var inputEl = document.createElement("input");
 
     inputEl.setAttribute("id", "default-input");
@@ -147,9 +163,17 @@ const GenerateContentButtons = () => {
     selectorContainerEl.classList.add("container-div");
     inputContainerEl.classList.add("container-div");
 
-    labelEl.setAttribute("for", "default-input");
+    selectorContainerEl.classList.add("container-div");
+    inputContainerEl.classList.add("container-div");
+    trendingContainerEl.classList.add("container-div");
+    trendingLabelEl.classList.add("label-style");
     labelEl.classList.add("label-style");
+    trendingEl.classList.add("custom-button");
+
+    labelEl.setAttribute("for", "default-input");
     labelEl.textContent = "Search: ";
+    trendingEl.textContent = "Search!";
+    trendingLabelEl.textContent = "Trending: ";
 
     buttonEl.textContent = "Search!";
     buttonEl.classList.add("search-button");
@@ -163,11 +187,14 @@ const GenerateContentButtons = () => {
         searchQuestion = inputEl.value;
         HandleUserInput();
     });
-    inputEl.addEventListener("submit", function(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        searchQuestion = inputEl.value;
-        HandleUserInput();
+    inputEl.addEventListener("keydown", function(event) {
+        if(event.key == "enter") {
+            searchQuestion = inputEl.value;
+            HandleUserInput(); }
+    });
+
+    trendingEl.addEventListener("click", function(event) {
+        FetchTrendingData();
     });
     
     var selectLabelEl = document.createElement("label");
@@ -197,6 +224,8 @@ const GenerateContentButtons = () => {
             if(passVal === dataCategoryNames[i]) {
                 if(passVal === "all") {
                     //Search all categories
+                    HandleUserInput();
+                    break;
                 }
                 SetIndex(i);
                 HandleUserInput();
@@ -207,6 +236,10 @@ const GenerateContentButtons = () => {
     selectorContainerEl.append(selectLabelEl);
     selectorContainerEl.append(selectEl);
     userInputDiv.append(selectorContainerEl);
+
+    trendingContainerEl.append(trendingLabelEl);
+    trendingContainerEl.append(trendingEl);
+    userInputDiv.append(trendingContainerEl);
 
     inputContainerEl.append(labelEl);
     inputContainerEl.append(inputEl);
@@ -242,7 +275,11 @@ const AppendGifToPageAlt = () => {
     gifParent.append(gifHolder);
     gifHolderEl.append(gifParent);
 }
-
+const HandleTrendingData = () => {
+    var random = Math.floor(Math.random()*10);
+    searchQuestion = holdData[random];
+    HandleUserInput();
+}
 const HandleUserInput = () => {
     FetchQuotes();
     FetchSearchData();

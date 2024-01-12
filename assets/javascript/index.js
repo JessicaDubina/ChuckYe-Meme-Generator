@@ -195,12 +195,9 @@ const GenerateContentButtons = () => {
 
         for(let i = 0; i < Object.keys(dataCategoryNames).length; i++) {
             if(passVal === dataCategoryNames[i]) {
-<<<<<<< HEAD
                 if(passVal === "all") {
                     //Search all categories
                 }
-=======
->>>>>>> 38898151d5aaa55438eafc8ad34604e63099ed90
                 SetIndex(i);
                 HandleUserInput();
             }

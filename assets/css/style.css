@@ -28,6 +28,7 @@ header {
 nav{
   display: inline-flex;
   flex-wrap: nowrap;
+  justify-content: space-between;
   background: var(--dark-blue-color);
   height: 80px;
   width: 100%;
@@ -42,9 +43,7 @@ label.logo{
 }
 
 nav ul{
-  display: flex;
-  justify-content: right;
-  margin-right: 5%;
+  padding-right: 10%;
   background: var(--dark-blue-color);
 }
 

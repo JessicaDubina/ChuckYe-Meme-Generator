@@ -119,7 +119,10 @@ a:hover,a.active{
   justify-content: center;
   margin-top: 27rem;
   font-size: large;
-  color: var(--cream-color);
+  color: var(--dark-blue-color);
+  background-color: var(--cream-color);
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
 }
 
 .bottom-section {
@@ -178,4 +181,11 @@ a:hover,a.active{
 
 .quote-options p {
   padding: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.local-storage {
+  height: 80%;
+  width: 80%;
+  overflow-y: scroll;
 }

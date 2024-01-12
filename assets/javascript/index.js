@@ -5,6 +5,7 @@ let gifHolderEl = document.querySelector("#gif-holder");
 let selectedQuoteEl = document.querySelector("#selected-quote");
 let chuckSelectEl = document.querySelector("#chuck-select");
 let kanyeSelectEl = document.querySelector("#kanye-select");
+let bottomSectionEl = document.querySelector(".bottom-section");
 
 let dataCategoryNames = {
     0: "actions",
@@ -260,6 +261,8 @@ const AppendGifToPage = () => {
     gifHolderEl.append(gifParent);
 }
 
+var indexstep = 0;
+
 const AppendGifToPageAlt = () => {
     var check = document.querySelector(".gif-parent");
     if(check) { check.remove(); }
@@ -268,24 +271,66 @@ const AppendGifToPageAlt = () => {
     var gifHolder = document.createElement("img");
     var random = Math.floor(Math.random() * holdData.data.length);
     console.log(index + " : " + random);
+    var imgsource = holdData.data[random].images.downsized_large.url;
 
-    gifHolder.src = holdData.data[random].images.downsized_large.url;
+    gifHolder.src = imgsource;
 
     gifParent.classList.add("gif-parent");
     gifParent.append(gifHolder);
     gifHolderEl.append(gifParent);
+    StoreDataLocally(indexstep, imgsource);
+    indexstep ++;
 }
+
 const HandleTrendingData = () => {
     var random = Math.floor(Math.random()*10);
     searchQuestion = holdData[random];
     HandleUserInput();
 }
+
 const HandleUserInput = () => {
     FetchQuotes();
     FetchSearchData();
 }
 
+var keyarray = [];
+var localStorageEl;
+const StoreDataLocally = (keyin,valuein) => {
+    keyarray.push(keyin);
+    // console.log("keyin" + keyin);
+    localStorage.setItem(keyin,valuein);
+    populatefromstorage();
+}
+
+const populatefromstorage = () => {
+    if (localStorageEl) {localStorageEl.remove();}
+    localStorageEl = document.createElement("div");
+    localStorageEl.classList.add("local-storage");
+    var placehold = localStorage.length;
+    for(let i=0; i < placehold; i ++){
+        var storagebuttonEl = document.createElement("button");
+        var localUrl;
+        if (localStorage.getItem(i)){
+            localUrl = localStorage.getItem(i);
+        }
+        storagebuttonEl.addEventListener("click", function(){
+            HandleUserInput();
+        });
+        storagebuttonEl.textContent = localUrl;
+        localStorageEl.append(storagebuttonEl);
+    }
+
+    bottomSectionEl.append(localStorageEl);
+
+}
 GenerateContentButtons();
+
+window.onload = () =>{
+    if (keyarray.length < 1) {
+        return;
+    }
+    populatefromstorage();
+}
 
 chuckSelectEl.addEventListener("click", function() {
     selectedQuoteEl.textContent = chuckQuoteEl.textContent;

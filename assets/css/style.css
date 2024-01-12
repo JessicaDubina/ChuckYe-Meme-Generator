@@ -111,7 +111,9 @@ a:hover,a.active{
   padding-left: 15rem;
   padding-right: 15rem;
   font-size: large;
-  color: var(--cream-color);
+  color: var(--dark-blue-color);
+  background-color: var(--cream-color);
+  overflow: hidden;
 }
 
 .bottom-section {

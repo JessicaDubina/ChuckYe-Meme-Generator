@@ -171,7 +171,7 @@ const GenerateContentButtons = () => {
 
     labelEl.setAttribute("for", "default-input");
     labelEl.textContent = "Search: ";
-    trendingEl.textContent = "Search!";
+    trendingEl.textContent = "Search Top 10!";
     trendingLabelEl.textContent = "Trending: ";
 
     buttonEl.textContent = "Search!";
@@ -238,28 +238,46 @@ const GenerateContentButtons = () => {
     gifHolderEl.append(bottomRuleEl);
 }
 
-let keyArray = [];
-let indexNameObject = new Object();
+const HandleTrendingData = () => {
+    var randomTrending = Math.floor(Math.random()*10);
+    searchQuestion = holdData.data[randomTrending];
+    holdTitle = searchQuestion;
+    console.log(holdData.data[randomTrending]);
+    
+    HandleUserInput();
+}
+
+const HandleUserInput = () => {
+    FetchQuotes();
+    FetchSearchData();
+}
+
+let storeDataObject = new Object();
+let storeNameURLArray = [];
 let localStorageEl;
-let indexStep = 0;
-const maxStore = 10;
 
 let canvasEl;
 let xSize;
 let ySize;
+const maxStore = 10;
+let indexStep = 0;
 let saveIndex = 0;
 let holdTitle = "";
 let saveParam;
+let holdQuote = "";
 
 const AppendGifFromCategory = () => {
     var check = document.querySelector(".gif-parent");
     if(check) { check.remove(); }
     var gifParent = document.createElement("div");
     var gifHolder = document.createElement("img");
+    var imgSource = holdData.data[index].gif.images.original;
+    
     gifParent.classList.add("gif-parent");
-    gifHolder.src = holdData.data[index].gif.images.downsized_large.url;
+    gifHolder.src = imgSource.url;
     gifParent.append(gifHolder);
     gifHolderEl.append(gifParent);
+    StoreDataLocally(imgSource);
 }
 
 const AppendGifFromSearch = () => {
@@ -271,13 +289,13 @@ const AppendGifFromSearch = () => {
     var random = Math.floor(Math.random() * holdData.data.length);
     var imgSource = holdData.data[random].images.original;
     gifImageEl.src = imgSource.url;
-
+    holdTitle = SanitizeString(holdData.data[random].title);
     AppendToCanvas(gifParent, imgSource);
 
     gifParent.classList.add("gif-parent");
     gifParent.append(gifImageEl);
     gifHolderEl.append(gifParent);
-    StoreDataLocally(indexStep, imgSource);
+    StoreDataLocally(imgSource);
 }
 
 const AppendGifFromStorage = (input) => {
@@ -286,13 +304,11 @@ const AppendGifFromStorage = (input) => {
 
     var gifParent = document.createElement("div");
     var gifHolder = document.createElement("img");
-    // HAS TO GO BACK TO THIS var imgSource = holdData.data[keyArray[input]].images.downsized_large.url;
-    //var imgSource = holdData.data[input].images.downsized_large.url;
-    var imgSource = localStorage.getItem(input);
-    console.log(imgSource);
-    AppendToCanvas(gifParent, imgSource);
+    var imgSource = storeDataObject[input];
+    AppendToCanvas(gifParent, imgSource[1]);
+    //WriteToCanvas(storeDataObject[input][2], 0);
 
-    gifHolder.src = imgSource;
+    gifHolder.src = imgSource[1].url;
     gifParent.classList.add("gif-parent");
     gifParent.append(gifHolder);
     gifHolderEl.append(gifParent);
@@ -300,18 +316,19 @@ const AppendGifFromStorage = (input) => {
 
 const AppendToCanvas = (parent, source) => {
     //TESTING
+    if(source == null) { return; }
     canvasEl = document.createElement("canvas");
     const ctx = canvasEl.getContext("2d");
+    let img = new Image();
     let heightScalar = 474.666/source.height;
+    
     xSize = heightScalar * source.width;
     ySize = heightScalar * source.height;
+    img.src = source.url;
 
     canvasEl.setAttribute("id", "custom-canvas");
     canvasEl.setAttribute("height", ySize);
     canvasEl.setAttribute("width", xSize);
-
-    const img = new Image();
-    img.src = source.url;
     img.crossOrigin = "anonymous";
     console.log(img.src);
 
@@ -333,121 +350,13 @@ const AppendToCanvas = (parent, source) => {
     parent.append(canvasEl);
 }
 
-const HandleTrendingData = () => {
-    var randomTrending = Math.floor(Math.random()*10);
-    searchQuestion = holdData.data[randomTrending];
-    holdTitle = searchQuestion;
-    console.log(holdData.data[randomTrending]);
-    //keyArray.push(random);
-    
-    HandleUserInput();
-}
-
-const HandleUserInput = () => {
-    FetchQuotes();
-    FetchSearchData();
-}
-
-const StoreDataLocally = (keyin,valuein) => {
-    //keyArray.push(keyin);
-    // console.log("keyin" + keyin);
-    if(indexStep > maxStore - 1) { return; }
-    
-    indexNameObject[indexStep] = holdTitle;
-    console.log(indexNameObject);
-
-    localStorage.setItem(keyin,valuein);
-    //localStorage.setItem("keyArray", keyArray);
-    localStorage.setItem("stepIndex", indexStep);
-    localStorage.setItem("saveIndex", saveIndex);
-    localStorage.setItem("GIFnames", JSON.stringify(indexNameObject));
-    indexStep ++;
-    populateFromStorage(false);
-}
-
-const GetLocalData = () => {
-    if(localStorage.getItem("keyArray")) {
-        keyArray = localStorage.getItem("keyArray");
-    }
-
-    if(localStorage.getItem("saveIndex")) {
-        saveIndex = localStorage.getItem("saveIndex");
-    }
-
-    if(localStorage.getItem("stepIndex")) {
-        indexStep = localStorage.getItem("stepIndex");
-    } else {
-        indexStep = 0;
-    }
-
-    if(localStorage.getItem("GIFnames")) {
-        var gifNames = localStorage.getItem("GIFnames");
-        indexNameObject = JSON.parse(gifNames);
-        console.log(indexNameObject);
-    }
-}
-
-const populateFromStorage = (check) => {
-    if (localStorageEl) {localStorageEl.remove();}
-    //var placehold = localStorage.length;
-    localStorageEl = document.createElement("div");
-    localStorageEl.classList.add("local-storage");
-
-    if(check == true) {
-        var breakLineEl = document.createElement("hr");
-        var localStorageHeadEl = document.createElement("h2");
-        localStorageHeadEl.textContent = "Stored GIFs";
-        bottomSectionEl.append(localStorageHeadEl);
-        bottomSectionEl.append(breakLineEl);
-    }
-
-    for(let i = 0; i < localStorage.length; i ++) {
-        var storageButtonEl = document.createElement("button");
-        var removeButtonEl = document.createElement("button");
-        var hyperlinkEl = document.createElement("a");
-        var localUrl;
-        var localTitle = "";
-        if (localStorage.getItem(i)){
-            localUrl = localStorage.getItem(i);
-        } else {
-            continue;
-        }
-        
-        if(indexNameObject) {
-            localTitle = indexNameObject[i];
-            localTitle = SanitizeString(localTitle);
-        }
-        
-        storageButtonEl.classList.add("storage-button");
-        removeButtonEl.classList.add("remove-button");
-        hyperlinkEl.setAttribute("href", localUrl);
-        hyperlinkEl.textContent = localTitle;
-        removeButtonEl.textContent = "X";
-        storageButtonEl.append(hyperlinkEl);
-        storageButtonEl.append(removeButtonEl);
-        localStorageEl.append(storageButtonEl);
-        storageButtonEl.addEventListener("click", function() {
-            AppendGifFromStorage(i);
-        });
-        removeButtonEl.addEventListener("click", function() {
-            RemoveFromStorage(i);
-        });
-    }
-
-    bottomSectionEl.append(localStorageEl);
-}
-
-const RemoveFromStorage = (index) => {
-    console.log("Removing" + i);
-}
-
 const WriteToCanvas = (input, index) => {
     if(!canvasEl) { return; }
     console.log(input);
     var ctx = canvasEl.getContext("2d");
     var measure = ctx.measureText(input);
-    var scaleX = xSize / measure.width;
-    var scaleY = ySize / measure.height;
+    //var scaleX = xSize / measure.width;
+    //var scaleY = ySize / measure.height;
     var backColor;
 
     if(index == 1) {
@@ -464,24 +373,161 @@ const WriteToCanvas = (input, index) => {
     ctx.textAlign = "center";
     ctx.textBaseLine = "center";
     //ctx.scale(scaleX, scaleX);
-    console.log(scaleX + " : " + scaleY);
+    //console.log(scaleX + " : " + scaleY);
     ctx.fillText(input, xSize*0.5, (ySize*0.95));
 
-    SaveFromCanvas();
+    SaveCanvasImage();
 }
 
-const SaveFromCanvas = () => {
+const SaveCanvasImage = () => {
     var downloadBtnEl = document.querySelector("#download-png-button");
     saveParam = "image/" + optionEl.value;
     var saveIMG = canvasEl.toDataURL(saveParam);
-    var saveName = "";
-    saveName = "chuck-yeezy-meme-" + saveIndex;
+    var saveName = "chuck-yeezy-meme-" + saveIndex;
 
     downloadBtnEl.href = saveIMG;
     downloadBtnEl.setAttribute("download", saveName);
     
     saveIndex++;
     localStorage.setItem("saveIndex", saveIndex);
+}
+
+const GetLocalData = () => {
+    if(localStorage.getItem("saveIndex")) {
+        saveIndex = localStorage.getItem("saveIndex");
+    }
+
+    if(localStorage.getItem("stepIndex")) {
+        indexStep = localStorage.getItem("stepIndex");
+        indexStep++;
+    } else {
+        indexStep = 0;
+    }
+
+    if(localStorage.getItem("GIFnames")) {
+        storeDataObject = JSON.parse(localStorage.getItem("GIFnames"));
+        console.log(storeDataObject);
+    }
+
+    populateFromStorage(true);
+}
+
+const StoreDataLocally = (valuein) => {
+    if(indexStep > maxStore) { return; }
+    if(holdQuote == "") { holdQuote = kanyeQuoteEl.textContent; }
+    if(localStorage.getItem("GIFnames")) {storeDataObject = JSON.parse(localStorage.getItem("GIFnames"));}
+    
+    storeNameURLArray[0] = holdTitle;
+    storeNameURLArray[1] = valuein;
+    storeNameURLArray[2] = holdQuote;
+    storeDataObject[indexStep] = storeNameURLArray;
+    console.log(indexStep + "" + storeDataObject);
+
+    //localStorage.setItem(keyin,valuein);
+    localStorage.setItem("stepIndex", indexStep);
+    localStorage.setItem("saveIndex", saveIndex);
+    localStorage.setItem("GIFnames", JSON.stringify(storeDataObject));
+    //populateFromStorage(false);
+    addButtonFromStorage();
+}
+
+const addButtonFromStorage = () => {
+    var storageButtonEl = document.createElement("button");
+    var removeButtonEl = document.createElement("button");
+    var hyperlinkEl = document.createElement("a");
+    var localUrl = storeDataObject[indexStep][1].url;
+    var localTitle = SanitizeString(storeDataObject[indexStep][0]);
+    var locationIndex = indexStep;
+
+    storageButtonEl.classList.add("storage-button");
+    removeButtonEl.classList.add("remove-button");
+    hyperlinkEl.setAttribute("href", localUrl);
+    hyperlinkEl.textContent = localTitle;
+    removeButtonEl.textContent = "X";
+    storageButtonEl.append(hyperlinkEl);
+    storageButtonEl.append(removeButtonEl);
+    localStorageEl.append(storageButtonEl);
+    storageButtonEl.addEventListener("click", function() {
+        console.log("Storage Pulling From : " + locationIndex);
+        AppendGifFromStorage(locationIndex);
+    });
+    removeButtonEl.addEventListener("click", function() {
+        RemoveFromStorage(locationIndex);
+    });
+    indexStep++;
+}
+
+const populateFromStorage = (check) => {
+    if (localStorageEl) {localStorageEl.remove();}
+    //var placehold = localStorage.length;
+    localStorageEl = document.createElement("div");
+    localStorageEl.classList.add("local-storage");
+
+    if(check == true) {
+        var breakLineEl = document.createElement("hr");
+        var localStorageHeadEl = document.createElement("h2");
+        localStorageHeadEl.textContent = "Stored GIFs";
+        bottomSectionEl.append(localStorageHeadEl);
+        bottomSectionEl.append(breakLineEl);
+    }
+    
+    for(let i = 0; i < Object.keys(storeDataObject).length; i ++) {
+        console.log("Populating From Storage : " + storeDataObject[i]);
+        var storageButtonEl = document.createElement("button");
+        var removeButtonEl = document.createElement("button");
+        var hyperlinkEl = document.createElement("a");
+        var localUrl = storeDataObject[i][1].url;
+        var localTitle = "";
+
+        if (!localUrl) {
+            continue;
+        }
+        
+        if(storeDataObject) {
+            localTitle = storeDataObject[i][0];
+            localTitle = SanitizeString(localTitle);
+        }
+        
+        storageButtonEl.classList.add("storage-button");
+        removeButtonEl.classList.add("remove-button");
+        hyperlinkEl.setAttribute("href", localUrl);
+        hyperlinkEl.textContent = localTitle;
+        removeButtonEl.textContent = "X";
+        storageButtonEl.append(hyperlinkEl);
+        storageButtonEl.append(removeButtonEl);
+        localStorageEl.append(storageButtonEl);
+        storageButtonEl.addEventListener("click", function() {
+            console.log("Storage Pulling From : " + i);
+            AppendGifFromStorage(i);
+        });
+        removeButtonEl.addEventListener("click", function(e) {
+            event.stopPropagation();
+            RemoveFromStorage(i);
+        });
+    }
+
+    bottomSectionEl.append(localStorageEl);
+}
+
+const RemoveFromStorage = (index) => {
+    console.log(storeDataObject);
+    for(let i = 0; i < Object.keys(storeDataObject).length; i++) {
+        var oldKey = i;
+        var newKey = i-1;
+        console.log(oldKey + " => " + newKey);
+        if(i > index) {
+            Object.defineProperty(storeDataObject, newKey, Object.getOwnPropertyDescriptor(storeDataObject, oldKey));
+        }
+    }
+    
+    delete storeDataObject[Object.keys(storeDataObject).length-1];
+    indexStep--;
+    if(indexStep < 0) { indexStep = 0; }
+    localStorage.setItem("stepIndex", indexStep);
+    localStorage.setItem("saveIndex", saveIndex);
+    console.log(storeDataObject);
+    localStorage.setItem("GIFnames", JSON.stringify(storeDataObject));
+    populateFromStorage(false);
 }
 
 const SanitizeString = (input) => {
@@ -499,7 +545,6 @@ GenerateContentButtons();
 
 window.onload = () => {
     FetchQuotes();
-    GetLocalData();
 
     var quotesButtonEl = document.createElement("button");
     var quotesButtonTextEl = document.createElement("h2");
@@ -513,10 +558,9 @@ window.onload = () => {
         FetchQuotes();
     });
 
-    console.log(keyArray.length);
-    //if (keyArray.length < 1) { return; }
-    populateFromStorage(true);
-    AppendGifFromStorage(0);
+    GetLocalData();
+    console.log(indexStep);
+    if(indexStep > 0) { AppendGifFromStorage(0); }
 }
 
 optionEl.addEventListener("change", () => {
@@ -525,10 +569,12 @@ optionEl.addEventListener("change", () => {
 
 chuckSelectEl.addEventListener("click", function() {
     //selectedQuoteEl.textContent = chuckQuoteEl.textContent;
+    holdQuote = chuckQuoteEl.textContent;
     WriteToCanvas(chuckQuoteEl.textContent, 0);
 });
 
 kanyeSelectEl.addEventListener("click", function() {
     //selectedQuoteEl.textContent = kanyeQuoteEl.textContent;
+    holdQuote = kanyeQuoteEl.textContent;
     WriteToCanvas(kanyeQuoteEl.textContent, 1);
 });

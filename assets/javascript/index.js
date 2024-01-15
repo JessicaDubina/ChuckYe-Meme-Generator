@@ -176,6 +176,12 @@ const GenerateContentButtons = () => {
     trendingEl.textContent = "Search!";
     trendingLabelEl.textContent = "Trending: ";
 
+    userInputDiv.classList.add("search-bar");
+    userInputDiv.classList.add("pure-g");
+    selectorContainerEl.classList.add("pure-u-sm-1");
+    inputContainerEl.classList.add("pure-u-sm-1");
+    trendingContainerEl.classList.add("pure-u-sm-1");
+
     buttonEl.textContent = "Search!";
     buttonEl.classList.add("search-button");
     buttonEl.classList.add("custom-button");

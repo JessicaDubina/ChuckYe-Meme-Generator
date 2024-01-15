@@ -5,6 +5,7 @@
   --dark-blue-color: #132043;
   --light-teal-color: #B4F1EA;
   --brown-color: #72501F;
+  --shadow-color: #f1b4bb72;
   --border-radius: 15px;
 }
 
@@ -40,18 +41,19 @@ label.logo{
   line-height: 80px;
   padding: 0 100px;
   font-weight: bold;
+  text-shadow: .2rem .4rem var(--shadow-color);
 }
 
 nav ul{
   padding-right: 10%;
   background: var(--dark-blue-color);
+  white-space: nowrap;
 }
 
 nav ul li{
   display: inline-block;
   line-height: 80px;
   margin: 0 5px;
-
 }
 
 nav ul li a{
@@ -67,6 +69,9 @@ a:hover,a.active{
   transition: .5s;
 }
 
+.content hr {
+  margin: 1% 0%;
+}
 
 #gif-holder {
   margin: 2% 10%;
@@ -88,6 +93,16 @@ a:hover,a.active{
   width: auto;
 }
 
+#gif-holder canvas {
+  border: .2rem solid var(--dark-blue-color);
+  height: auto;
+  width: auto;
+}
+
+#gif-holder .gif-parent {
+  margin-top: 2%;
+}
+
 .label-style {
   font-size: 1.2rem;
   font-weight: bolder;
@@ -102,13 +117,14 @@ a:hover,a.active{
 
 .custom-button {
   border-radius: var(--border-radius);
+  border: .1rem solid var(--dark-blue-color);
   background-color: var(--light-teal-color);
   border-width: 1px;
   padding: 0 1rem;
 }
 
 .custom-button:hover {
-  background-color: white;
+  background-color: var(--cream-color);
   transition-duration: 1s;
 }
 
@@ -129,6 +145,12 @@ a:hover,a.active{
   justify-content: center;
 }
 
+.bottom-section h2 {
+  margin: 1% 0%;
+  text-align: center;
+  width: 100%;
+}
+
 .bottom-section .figure {
   display: flex;
   flex-wrap: wrap;
@@ -144,22 +166,42 @@ a:hover,a.active{
   padding: 5%;
 }
 
+.bottom-section hr {
+  width: 80%;
+  margin-bottom: 2%;
+}
+
+.bottom-section .custom-button {
+  margin: 1% 0%;
+  width: 60%;
+}
+
 #kanye img {
   display: flex;
-  background-color: var(--brown-color);
-  justify-content: center;
+  background-color: var(--pink-color);
 }
 
 #chuck img {
-  background-color: var(--pink-color);
-}
-
-.bottom-section .color1 {
   background-color: var(--brown-color);
 }
 
-.bottom-section .color2 {
+.bottom-section .color1 {
   background-color: var(--pink-color);
+}
+
+.bottom-section .color2 {
+  background-color: var(--brown-color);
+}
+
+.quote-select {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.quote-select img {
+  height: 100%;
+  width: 100%;
 }
 
 .figure h3 {
@@ -184,7 +226,49 @@ a:hover,a.active{
 }
 
 .local-storage {
-  height: 80%;
+  display: block;
+  height: 10rem;
+  margin-top: -1%;
+  margin-bottom: 1%;
   width: 80%;
   overflow-y: scroll;
+  scrollbar-color: var(--light-teal-color) var(--dark-blue-color);
+  scrollbar-width: thin;
+}
+
+.local-storage .storage-button {
+  position: relative;
+  background-color: var(--light-teal-color);
+  border: .1rem solid var(--dark-blue-color);
+  border-radius: 15px;
+  margin-top: .2%;
+  margin-bottom: .8%;
+  margin-left: 10%;
+  width: 80%;
+  overflow: hidden;
+}
+
+.local-storage .remove-button {
+  position: absolute;
+  background-color: var(--pink-color);
+  border: .1rem solid var(--dark-blue-color);
+  border-radius: 25px;
+  height: 90%;
+  width: 4%;
+  right: 0.5%;
+  top: 5%;
+}
+
+.local-storage .storage-button:hover {
+  transition-duration: 1s;
+  background-color: var(--cream-color);
+}
+
+.local-storage .remove-button:hover {
+  transition-duration: .5s;
+  background-color: red;
+}
+
+.local-storage a {
+  font-size: 200%;
 }

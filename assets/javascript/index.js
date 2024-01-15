@@ -2,10 +2,11 @@
 let kanyeQuoteEl = document.querySelector("#kanye-quote");
 let chuckQuoteEl = document.querySelector("#chuck-quote");
 let gifHolderEl = document.querySelector("#gif-holder");
-let selectedQuoteEl = document.querySelector("#selected-quote");
+//let selectedQuoteEl = document.querySelector("#selected-quote");
 let chuckSelectEl = document.querySelector("#chuck-select");
 let kanyeSelectEl = document.querySelector("#kanye-select");
 let bottomSectionEl = document.querySelector(".bottom-section");
+let optionEl = document.querySelector(".download-options");
 
 let dataCategoryNames = {
     0: "actions",
@@ -63,15 +64,6 @@ var searchEndpointKey = "https://api.giphy.com/v1/gifs/search?limit=" + searchLi
 + searchQuestion + "&api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 var searchtrendingKey ="https://api.giphy.com/v1/trending/searches?api_key=bKFrNvQBG7WJdUKyt4cnTcta9Q84q8ks";
 
-const SetIndex = (input) => {
-    index = input;
-    console.log("Index Set: " + index);
-}
-
-const SetSearchParam = (input) => {
-    searchQuestion = input;
-}
-
 const FetchQuotes = () => {
     fetch(kanyeKey, {
         method: 'GET',
@@ -105,13 +97,13 @@ const FetchSearchData = () => {
     }).then(function(data) {
         console.log(data);
         holdData = data;
-        AppendGifToPageAlt();
+        AppendGifFromSearch();
     });
 
     /*let CycleGif = setInterval(function() {
         index++;
         if(index > dataCategoryNames.length) { index = 0; }
-        AppendGifToPageAlt();
+        AppendGifFromSearch();
     }, 10000);*/
 }
 
@@ -123,13 +115,13 @@ const FetchCategoryData = () => {
     }).then(function(data) {
         console.log(data);
         holdData = data;
-        AppendGifToPage();
+        AppendGifFromCategory();
     });
 
     /*let CycleGif = setInterval(function() {
         index++;
         if(index > dataCategoryNames.length) { index = 0; }
-        AppendGifToPage();
+        AppendGifFromCategory();
     }, 10000);*/
 }
 
@@ -145,6 +137,10 @@ const FetchTrendingData = () => {
     });
 }
 
+const SetSearchParam = (input) => {
+    searchQuestion = input;
+}
+
 const GenerateContentButtons = () => {
     console.log("GENERATING USER INPUT HANDLERS");
     var userInputDiv = document.createElement("div");
@@ -156,11 +152,13 @@ const GenerateContentButtons = () => {
     var labelEl = document.createElement("label");
     var trendingLabelEl = document.createElement("label");
     var inputEl = document.createElement("input");
+    var bottomRuleEl = document.createElement("hr");
 
     inputEl.setAttribute("id", "default-input");
     inputEl.setAttribute("name", "default-input");
     inputEl.setAttribute("type", "text");
     inputEl.setAttribute("placeholder", "animals");
+    userInputDiv.classList.add("user-div");
     selectorContainerEl.classList.add("container-div");
     inputContainerEl.classList.add("container-div");
 
@@ -185,25 +183,8 @@ const GenerateContentButtons = () => {
     buttonEl.textContent = "Search!";
     buttonEl.classList.add("search-button");
     buttonEl.classList.add("custom-button");
-    buttonEl.addEventListener("click", function() {
-        if(inputEl.value == "") { 
-            console.log("No Search Param");
-            return; 
-        }
-
-        searchQuestion = inputEl.value;
-        HandleUserInput();
-    });
-    inputEl.addEventListener("keydown", function(event) {
-        if(event.key == "enter") {
-            searchQuestion = inputEl.value;
-            HandleUserInput(); }
-    });
-
-    trendingEl.addEventListener("click", function(event) {
-        FetchTrendingData();
-    });
     
+    //Category Select
     var selectLabelEl = document.createElement("label");
     var selectEl = document.createElement("select");
     selectLabelEl.textContent = "Choose Category: ";
@@ -223,21 +204,27 @@ const GenerateContentButtons = () => {
         selectEl.append(optionEl);
     }
 
+    //Event Listeners
+    buttonEl.addEventListener("click", function() {
+        if(inputEl.value == "") { 
+            alert("No Search Input Found!");
+            return; 
+        }
+        searchQuestion = inputEl.value;
+        HandleUserInput();
+    });
+    inputEl.addEventListener("keydown", function(event) {
+        if(event.key == "Enter") {
+            searchQuestion = inputEl.value;
+            HandleUserInput(); }
+    });
+    trendingEl.addEventListener("click", function() {
+        FetchTrendingData();
+    });
     selectEl.addEventListener("change", function() {
         var passVal = this.value;
-        console.log(passVal);
-
-        for(let i = 0; i < Object.keys(dataCategoryNames).length; i++) {
-            if(passVal === dataCategoryNames[i]) {
-                if(passVal === "all") {
-                    //Search all categories
-                    HandleUserInput();
-                    break;
-                }
-                SetIndex(i);
-                HandleUserInput();
-            }
-        }
+        searchQuestion = passVal;
+        HandleUserInput();
     });
     
     selectorContainerEl.append(selectLabelEl);
@@ -254,9 +241,23 @@ const GenerateContentButtons = () => {
     userInputDiv.append(inputContainerEl);
 
     gifHolderEl.prepend(userInputDiv);
+    gifHolderEl.append(bottomRuleEl);
 }
 
-const AppendGifToPage = () => {
+let keyArray = [];
+let indexNameObject = new Object();
+let localStorageEl;
+let indexStep = 0;
+const maxStore = 10;
+
+let canvasEl;
+let xSize;
+let ySize;
+let saveIndex = 0;
+let holdTitle = "";
+let saveParam;
+
+const AppendGifFromCategory = () => {
     var check = document.querySelector(".gif-parent");
     if(check) { check.remove(); }
     var gifParent = document.createElement("div");
@@ -267,30 +268,84 @@ const AppendGifToPage = () => {
     gifHolderEl.append(gifParent);
 }
 
-var indexstep = 0;
+const AppendGifFromSearch = () => {
+    var check = document.querySelector(".gif-parent");
+    if(check) { check.remove(); }
 
-const AppendGifToPageAlt = () => {
+    var gifParent = document.createElement("div");
+    var gifImageEl = document.createElement("img");
+    var random = Math.floor(Math.random() * holdData.data.length);
+    var imgSource = holdData.data[random].images.original;
+    gifImageEl.src = imgSource.url;
+
+    AppendToCanvas(gifParent, imgSource);
+
+    gifParent.classList.add("gif-parent");
+    gifParent.append(gifImageEl);
+    gifHolderEl.append(gifParent);
+    StoreDataLocally(indexStep, imgSource);
+}
+
+const AppendGifFromStorage = (input) => {
     var check = document.querySelector(".gif-parent");
     if(check) { check.remove(); }
 
     var gifParent = document.createElement("div");
     var gifHolder = document.createElement("img");
-    var random = Math.floor(Math.random() * holdData.data.length);
-    console.log(index + " : " + random);
-    var imgsource = holdData.data[random].images.downsized_large.url;
+    // HAS TO GO BACK TO THIS var imgSource = holdData.data[keyArray[input]].images.downsized_large.url;
+    //var imgSource = holdData.data[input].images.downsized_large.url;
+    var imgSource = localStorage.getItem(input);
+    console.log(imgSource);
+    AppendToCanvas(gifParent, imgSource);
 
-    gifHolder.src = imgsource;
-
+    gifHolder.src = imgSource;
     gifParent.classList.add("gif-parent");
     gifParent.append(gifHolder);
     gifHolderEl.append(gifParent);
-    StoreDataLocally(indexstep, imgsource);
-    indexstep ++;
+}
+
+const AppendToCanvas = (parent, source) => {
+    //TESTING
+    canvasEl = document.createElement("canvas");
+    const ctx = canvasEl.getContext("2d");
+    let heightScalar = 474.666/source.height;
+    xSize = heightScalar * source.width;
+    ySize = heightScalar * source.height;
+
+    canvasEl.setAttribute("id", "custom-canvas");
+    canvasEl.setAttribute("height", ySize);
+    canvasEl.setAttribute("width", xSize);
+
+    const img = new Image();
+    img.src = source.url;
+    img.crossOrigin = "anonymous";
+    console.log(img.src);
+
+    //var frames = source.frames;
+    //var frameArray = Array(Number(frames));
+    //let gifBlob = fetch(source.url).then((r) => r.blob());
+    //console.log(frames + " : " + gifBlob);
+    //var myGif = new GIF();
+    //myGif.load(gifImageEl.src);
+    //myGif.addEventListener("load", () => {
+    //    ctx.drawImage(myGif, 0, 0, xSize, ySize);
+    //});
+
+    img.addEventListener("load", () => {
+        ctx.drawImage(img, 0, 0, xSize, ySize);
+    });
+    //End Testing
+    
+    parent.append(canvasEl);
 }
 
 const HandleTrendingData = () => {
-    var random = Math.floor(Math.random()*10);
-    searchQuestion = holdData[random];
+    var randomTrending = Math.floor(Math.random()*10);
+    searchQuestion = holdData.data[randomTrending];
+    holdTitle = searchQuestion;
+    console.log(holdData.data[randomTrending]);
+    //keyArray.push(random);
+    
     HandleUserInput();
 }
 
@@ -299,49 +354,187 @@ const HandleUserInput = () => {
     FetchSearchData();
 }
 
-var keyarray = [];
-var localStorageEl;
 const StoreDataLocally = (keyin,valuein) => {
-    keyarray.push(keyin);
+    //keyArray.push(keyin);
     // console.log("keyin" + keyin);
+    if(indexStep > maxStore - 1) { return; }
+    
+    indexNameObject[indexStep] = holdTitle;
+    console.log(indexNameObject);
+
     localStorage.setItem(keyin,valuein);
-    populatefromstorage();
+    //localStorage.setItem("keyArray", keyArray);
+    localStorage.setItem("stepIndex", indexStep);
+    localStorage.setItem("saveIndex", saveIndex);
+    localStorage.setItem("GIFnames", JSON.stringify(indexNameObject));
+    indexStep ++;
+    populateFromStorage(false);
 }
 
-const populatefromstorage = () => {
+const GetLocalData = () => {
+    if(localStorage.getItem("keyArray")) {
+        keyArray = localStorage.getItem("keyArray");
+    }
+
+    if(localStorage.getItem("saveIndex")) {
+        saveIndex = localStorage.getItem("saveIndex");
+    }
+
+    if(localStorage.getItem("stepIndex")) {
+        indexStep = localStorage.getItem("stepIndex");
+    } else {
+        indexStep = 0;
+    }
+
+    if(localStorage.getItem("GIFnames")) {
+        var gifNames = localStorage.getItem("GIFnames");
+        indexNameObject = JSON.parse(gifNames);
+        console.log(indexNameObject);
+    }
+}
+
+const populateFromStorage = (check) => {
     if (localStorageEl) {localStorageEl.remove();}
+    //var placehold = localStorage.length;
     localStorageEl = document.createElement("div");
     localStorageEl.classList.add("local-storage");
-    var placehold = localStorage.length;
-    for(let i=0; i < placehold; i ++){
-        var storagebuttonEl = document.createElement("button");
+
+    if(check == true) {
+        var breakLineEl = document.createElement("hr");
+        var localStorageHeadEl = document.createElement("h2");
+        localStorageHeadEl.textContent = "Stored GIFs";
+        bottomSectionEl.append(localStorageHeadEl);
+        bottomSectionEl.append(breakLineEl);
+    }
+
+    for(let i = 0; i < localStorage.length; i ++) {
+        var storageButtonEl = document.createElement("button");
+        var removeButtonEl = document.createElement("button");
+        var hyperlinkEl = document.createElement("a");
         var localUrl;
+        var localTitle = "";
         if (localStorage.getItem(i)){
             localUrl = localStorage.getItem(i);
+        } else {
+            continue;
         }
-        storagebuttonEl.addEventListener("click", function(){
-            HandleUserInput();
+        
+        if(indexNameObject) {
+            localTitle = indexNameObject[i];
+            localTitle = SanitizeString(localTitle);
+        }
+        
+        storageButtonEl.classList.add("storage-button");
+        removeButtonEl.classList.add("remove-button");
+        hyperlinkEl.setAttribute("href", localUrl);
+        hyperlinkEl.textContent = localTitle;
+        removeButtonEl.textContent = "X";
+        storageButtonEl.append(hyperlinkEl);
+        storageButtonEl.append(removeButtonEl);
+        localStorageEl.append(storageButtonEl);
+        storageButtonEl.addEventListener("click", function() {
+            AppendGifFromStorage(i);
         });
-        storagebuttonEl.textContent = localUrl;
-        localStorageEl.append(storagebuttonEl);
+        removeButtonEl.addEventListener("click", function() {
+            RemoveFromStorage(i);
+        });
     }
 
     bottomSectionEl.append(localStorageEl);
-
 }
+
+const RemoveFromStorage = (index) => {
+    console.log("Removing" + i);
+}
+
+const WriteToCanvas = (input, index) => {
+    if(!canvasEl) { return; }
+    console.log(input);
+    var ctx = canvasEl.getContext("2d");
+    var measure = ctx.measureText(input);
+    var scaleX = xSize / measure.width;
+    var scaleY = ySize / measure.height;
+    var backColor;
+
+    if(index == 1) {
+        backColor = "#F1B4BB";
+    } else {
+        backColor = "#72501F";
+    }
+
+    ctx.fillStyle = backColor;
+    ctx.fillRect(0, ySize*0.8, xSize, ySize*0.2);
+    
+    ctx.font = "20px Poppins";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.textBaseLine = "center";
+    //ctx.scale(scaleX, scaleX);
+    console.log(scaleX + " : " + scaleY);
+    ctx.fillText(input, xSize*0.5, (ySize*0.95));
+
+    SaveFromCanvas();
+}
+
+const SaveFromCanvas = () => {
+    var downloadBtnEl = document.querySelector("#download-png-button");
+    saveParam = "image/" + optionEl.value;
+    var saveIMG = canvasEl.toDataURL(saveParam);
+    var saveName = "";
+    saveName = "chuck-yeezy-meme-" + saveIndex;
+
+    downloadBtnEl.href = saveIMG;
+    downloadBtnEl.setAttribute("download", saveName);
+    
+    saveIndex++;
+    localStorage.setItem("saveIndex", saveIndex);
+}
+
+const SanitizeString = (input) => {
+    const splitArray = input.split(" ");
+    let build = "";
+    for(let i = 0; i < splitArray.length; i++) {
+        var piece = splitArray[i].slice(1);
+        splitArray[i] = splitArray[i].charAt(0).toUpperCase() + piece;
+        build += " " + splitArray[i];
+    }
+    return build;
+}
+
 GenerateContentButtons();
 
-window.onload = () =>{
-    if (keyarray.length < 1) {
-        return;
-    }
-    populatefromstorage();
+window.onload = () => {
+    FetchQuotes();
+    GetLocalData();
+
+    var quotesButtonEl = document.createElement("button");
+    var quotesButtonTextEl = document.createElement("h2");
+
+    quotesButtonEl.classList.add("custom-button");
+    quotesButtonTextEl.textContent = "New Quotes";
+
+    quotesButtonEl.append(quotesButtonTextEl);
+    bottomSectionEl.prepend(quotesButtonEl);
+    quotesButtonEl.addEventListener("click", () => {
+        FetchQuotes();
+    });
+
+    console.log(keyArray.length);
+    //if (keyArray.length < 1) { return; }
+    populateFromStorage(true);
+    AppendGifFromStorage(0);
 }
 
+optionEl.addEventListener("change", () => {
+    saveParam = "image/" + optionEl.value;
+});
+
 chuckSelectEl.addEventListener("click", function() {
-    selectedQuoteEl.textContent = chuckQuoteEl.textContent;
+    //selectedQuoteEl.textContent = chuckQuoteEl.textContent;
+    WriteToCanvas(chuckQuoteEl.textContent, 0);
 });
 
 kanyeSelectEl.addEventListener("click", function() {
-    selectedQuoteEl.textContent = kanyeQuoteEl.textContent;
+    //selectedQuoteEl.textContent = kanyeQuoteEl.textContent;
+    WriteToCanvas(kanyeQuoteEl.textContent, 1);
 });

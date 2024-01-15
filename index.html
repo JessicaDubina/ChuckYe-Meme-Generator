@@ -16,8 +16,12 @@
         <nav class="pure-g">
             <label class="logo pure-u-3-5">ChuckYeezy Meme Generator</label>
             <ul class="pure-u-2-5">
-                <li><a class="custom-button" href="#">Download</a></li>
-                <li><button class="download-button custom-button">Download/Export</button></li>
+                <li><a class="active custom-button" id="download-png-button" href="#" download="chuck-yeezy-meme-">Download</a></li>
+                <!-- <li><button class="download-button custom-button">Download/Export</button></li> -->
+                <li><select class="download-options download-button custom-button">
+                    <option value="png" selected>PNG</option>
+                    <option value="jpeg">JPEG</option>
+                </select></li>
             </ul>
         </nav> 
     </header>
@@ -32,8 +36,9 @@
 
     <!--elements for each meme option-->
     <section class="bottom-section pure-g">
-        <div id="kanye" class="pure-u-md-1-5 pure-u-1-4 figure">
-            <button id="kanye-select">
+        <hr>
+        <div id="kanye" class="pure-u-1-5 figure">
+            <button class="quote-select" id="kanye-select">
                 <h3>Kanye</h3>
                 <img class="pure-img" src="./assets/images/kanye-west-transparent.png" alt="image of Kanye West">
             </button>
@@ -48,7 +53,7 @@
         </div>
         <div id="chuck" class="pure-u-md-1-5 pure-u-1-4 figure">
             
-            <button id="chuck-select">
+            <button class="quote-select" id="chuck-select">
                 <h3>Chuck Norris</h3>
                 <img class="pure-img" src="./assets/images/chuck-norris-transparent-background.png" alt="image of Chuck Norris">
             </button>

@@ -205,11 +205,11 @@ const GenerateContentButtons = () => {
 
     //Event Listeners
     buttonEl.addEventListener("click", function() {
-        if(inputEl.value == "") { 
-            alert("No Search Input Found!");
-            return; 
+        if(inputEl.value == "") {
+            searchQuestion = "all";
+        } else {
+            searchQuestion = inputEl.value;
         }
-        searchQuestion = inputEl.value;
         HandleUserInput();
     });
     inputEl.addEventListener("keydown", function(event) {

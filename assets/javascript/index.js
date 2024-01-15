@@ -478,13 +478,12 @@ const WriteToCanvas = (input, index) => {
     } else if (input.length < 80) {
         //need to account for last space
         const strLen = input.length / 2;
-        let lastSpaceBeforeBreak = string.lastIndexOf(' ', strLen);
+        let lastSpaceBeforeBreak = input.lastIndexOf(' ', strLen);
         const inputPart1 = input.substring(0, lastSpaceBeforeBreak);
         const inputPart2 = input.substring(lastSpaceBeforeBreak, input.length);
         ctx.fillText(inputPart1, xSize*0.5, (ySize*0.91),measure.width);
         ctx.fillText(inputPart2, xSize*0.5, (ySize*0.97),measure.width);
     } else {
-        debugger
         const strLen = input.length / 3;
         let lastSpaceBeforeBreak = input.lastIndexOf(' ', strLen);
         let nextSpaceBeforeBreak = input.lastIndexOf(' ', strLen * 2);

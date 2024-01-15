@@ -202,7 +202,8 @@ input {
 
 /*Custom media queries on top of pure css*/
 @media screen and (max-width: 600px) {
- .quote-options, .figure h3 {
+ 
+  .quote-options, .figure h3 {
     font-size: 80%;
   }
 
@@ -223,7 +224,7 @@ input {
   }
 
   label.logo {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .label-style {
@@ -250,8 +251,17 @@ input {
     font-size: .8rem;
   }
 
+  .search-bar {
+    font-size: 70%;
+  }
+
+  .container-div {
+    flex-wrap: wrap;
+    margin: 5px 0;
+  }
+
   .custom-button {
-    font-size: .8rem;
+    font-size: .7rem;
   }
 
   #selected-quote {

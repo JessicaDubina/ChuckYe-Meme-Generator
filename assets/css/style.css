@@ -27,36 +27,37 @@ header {
 }
 
 nav{
-  display: inline-flex;
-  flex-wrap: nowrap;
   justify-content: space-between;
   background: var(--dark-blue-color);
   height: 80px;
   width: 100%;
 }
 
+nav.pure-g {
+  align-content: center;
+}
+
 label.logo{
   color: white;
-  font-size: 35px;
-  line-height: 80px;
-  padding: 0 100px;
+  font-size: 2rem;
+  padding-left: 6vw;
   font-weight: bold;
+  align-self: center;
   text-shadow: .2rem .4rem var(--shadow-color);
 }
 
-nav ul{
-  padding-right: 10%;
-  background: var(--dark-blue-color);
-  white-space: nowrap;
+nav ul {
+  text-align: right;
+  align-self: center;
 }
 
 nav ul li{
   display: inline-block;
-  line-height: 80px;
-  margin: 0 5px;
+  margin: 5px;
+
 }
 
-nav ul li a{
+/* nav ul li a{
   color: white;
   font-size: 17px;
   padding: 7px 13px;
@@ -71,20 +72,34 @@ a:hover,a.active{
 
 .content hr {
   margin: 1% 0%;
-}
+} */
 
 #gif-holder {
+  display: flex;
+  flex-direction: column;
   margin: 2% 10%;
   min-height: 30rem;
   width: 80%;
+  justify-content: center;
 }
 
 #gif-holder div {
   display: flex;
-  align-items: center;
   justify-content: space-evenly;
+  align-items: center;
   height: auto;
+}
+
+.gif-parent {
   width: 100%;
+}
+
+.search-bar {
+  font-size: 14px;
+}
+
+.container-div {
+  padding: 5px;
 }
 
 #gif-holder img {
@@ -106,7 +121,7 @@ a:hover,a.active{
 .label-style {
   font-size: 1.2rem;
   font-weight: bolder;
-  padding: .5rem;
+  padding: 0;
   margin: 0 .5rem;
 }
 
@@ -119,23 +134,32 @@ a:hover,a.active{
   border-radius: var(--border-radius);
   border: .1rem solid var(--dark-blue-color);
   background-color: var(--light-teal-color);
+  color: var(--dark-blue-color);
   border-width: 1px;
   padding: 0 1rem;
 }
 
-.custom-button:hover {
-  background-color: var(--cream-color);
+.custom-button :hover {
+  background-color: var(--pink-color);
+  color: var(--cream-color);
   transition-duration: 1s;
+}
+
+input {
+  max-width: 8rem;
 }
 
 #selected-quote {
   display: flex;
   position: absolute;
   justify-content: center;
-  margin-top: 27rem;
-  font-size: large;
+  margin-top: 24rem;
+  margin-left: 23.5%;
+  padding: 0 .5rem;
+  max-width: 600px;
+  font-size: 1.3rem;
   color: var(--dark-blue-color);
-  background-color: var(--cream-color);
+  background-color: white;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
 }
@@ -234,6 +258,76 @@ a:hover,a.active{
   overflow-y: scroll;
   scrollbar-color: var(--light-teal-color) var(--dark-blue-color);
   scrollbar-width: thin;
+}
+
+
+/*Custom media queries on top of pure css*/
+@media screen and (max-width: 600px) {
+ 
+  .quote-options, .figure h3 {
+    font-size: 80%;
+  }
+
+  #gif-holder {
+    min-height: 20rem;
+  }
+
+  #gif-holder img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  #selected-quote {
+    font-size: 3vw;
+    width: 70%;
+    margin: 30vh 5% 0 5%;
+    justify-content: center;
+  }
+
+  label.logo {
+    font-size: 1.4rem;
+  }
+
+  .label-style {
+    font-size: 1rem;
+  }
+
+  .custom-button {
+    font-size: .8rem;
+  }
+
+}
+
+@media screen and (max-width: 400px) {
+  .quote-options, .figure h3 {
+    font-size: 70%;
+  }
+
+  label.logo {
+    font-size: 1.2rem;
+    padding-left: 3vw;
+  }
+
+  .label-style {
+    font-size: .8rem;
+  }
+
+  .search-bar {
+    font-size: 70%;
+  }
+
+  .container-div {
+    flex-wrap: wrap;
+    margin: 5px 0;
+  }
+
+  .custom-button {
+    font-size: .7rem;
+  }
+
+  #selected-quote {
+    margin: 28vh 5% 0 5%;
+  }
 }
 
 .local-storage .storage-button {

@@ -469,10 +469,31 @@ const WriteToCanvas = (input, index) => {
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
     ctx.textBaseLine = "center";
-    //ctx.scale(scaleX, scaleX);
-    console.log(scaleX + " : " + scaleY);
-    ctx.fillText(input, xSize*0.5, (ySize*0.95));
 
+    //create if statement to divide string up based on length and populate below. 
+    //Part 1 populates only if it's 3 parts, part 2 always populates, part 3 populates only if its 2 or more parts
+    if (input.length < 40) {
+        let inputPart1 = input;
+        ctx.fillText(inputPart1, xSize*0.5, (ySize*0.91),measure.width);
+    } else if (input.length < 80) {
+        //need to account for last space
+        const strLen = input.length / 2;
+        let lastSpaceBeforeBreak = input.lastIndexOf(' ', strLen);
+        const inputPart1 = input.substring(0, lastSpaceBeforeBreak);
+        const inputPart2 = input.substring(lastSpaceBeforeBreak, input.length);
+        ctx.fillText(inputPart1, xSize*0.5, (ySize*0.91),measure.width);
+        ctx.fillText(inputPart2, xSize*0.5, (ySize*0.97),measure.width);
+    } else {
+        const strLen = input.length / 3;
+        let lastSpaceBeforeBreak = input.lastIndexOf(' ', strLen);
+        let nextSpaceBeforeBreak = input.lastIndexOf(' ', strLen * 2);
+        const inputPart1 = input.substring(0, lastSpaceBeforeBreak);
+        const inputPart2 = input.substring(lastSpaceBeforeBreak, nextSpaceBeforeBreak);
+        const inputPart3 = input.substring(nextSpaceBeforeBreak, input.length);
+        ctx.fillText(inputPart1, xSize*0.5, (ySize*0.85),measure.width);
+        ctx.fillText(inputPart2, xSize*0.5, (ySize*0.91),measure.width);
+        ctx.fillText(inputPart3, xSize*0.5, (ySize*0.97),measure.width);
+    }
     SaveFromCanvas();
 }
 

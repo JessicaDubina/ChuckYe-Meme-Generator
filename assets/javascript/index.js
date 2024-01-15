@@ -142,7 +142,6 @@ const SetSearchParam = (input) => {
 }
 
 const GenerateContentButtons = () => {
-    console.log("GENERATING USER INPUT HANDLERS");
     var userInputDiv = document.createElement("div");
     var selectorContainerEl = document.createElement("div");
     var inputContainerEl = document.createElement("div");
@@ -241,9 +240,7 @@ const GenerateContentButtons = () => {
 const HandleTrendingData = () => {
     var randomTrending = Math.floor(Math.random()*10);
     searchQuestion = holdData.data[randomTrending];
-    holdTitle = searchQuestion;
-    console.log(holdData.data[randomTrending]);
-    
+    holdTitle = searchQuestion;    
     HandleUserInput();
 }
 
@@ -330,7 +327,6 @@ const AppendToCanvas = (parent, source) => {
     canvasEl.setAttribute("height", ySize);
     canvasEl.setAttribute("width", xSize);
     img.crossOrigin = "anonymous";
-    console.log(img.src);
 
     //var frames = source.frames;
     //var frameArray = Array(Number(frames));
@@ -352,7 +348,6 @@ const AppendToCanvas = (parent, source) => {
 
 const WriteToCanvas = (input, index) => {
     if(!canvasEl) { return; }
-    console.log(input);
     var ctx = canvasEl.getContext("2d");
     var measure = ctx.measureText(input);
     //var scaleX = xSize / measure.width;
@@ -406,7 +401,6 @@ const GetLocalData = () => {
 
     if(localStorage.getItem("GIFnames")) {
         storeDataObject = JSON.parse(localStorage.getItem("GIFnames"));
-        console.log(storeDataObject);
     }
 
     populateFromStorage(true);
@@ -421,7 +415,6 @@ const StoreDataLocally = (valuein) => {
     storeNameURLArray[1] = valuein;
     storeNameURLArray[2] = holdQuote;
     storeDataObject[indexStep] = storeNameURLArray;
-    console.log(indexStep + "" + storeDataObject);
 
     //localStorage.setItem(keyin,valuein);
     localStorage.setItem("stepIndex", indexStep);
@@ -448,7 +441,6 @@ const addButtonFromStorage = () => {
     storageButtonEl.append(removeButtonEl);
     localStorageEl.append(storageButtonEl);
     storageButtonEl.addEventListener("click", function() {
-        console.log("Storage Pulling From : " + locationIndex);
         AppendGifFromStorage(locationIndex);
     });
     removeButtonEl.addEventListener("click", function() {
@@ -472,7 +464,6 @@ const populateFromStorage = (check) => {
     }
     
     for(let i = 0; i < Object.keys(storeDataObject).length; i ++) {
-        console.log("Populating From Storage : " + storeDataObject[i]);
         var storageButtonEl = document.createElement("button");
         var removeButtonEl = document.createElement("button");
         var hyperlinkEl = document.createElement("a");
@@ -497,11 +488,10 @@ const populateFromStorage = (check) => {
         storageButtonEl.append(removeButtonEl);
         localStorageEl.append(storageButtonEl);
         storageButtonEl.addEventListener("click", function() {
-            console.log("Storage Pulling From : " + i);
             AppendGifFromStorage(i);
         });
         removeButtonEl.addEventListener("click", function(e) {
-            event.stopPropagation();
+            e.stopPropagation();
             RemoveFromStorage(i);
         });
     }
@@ -514,7 +504,6 @@ const RemoveFromStorage = (index) => {
     for(let i = 0; i < Object.keys(storeDataObject).length; i++) {
         var oldKey = i;
         var newKey = i-1;
-        console.log(oldKey + " => " + newKey);
         if(i > index) {
             Object.defineProperty(storeDataObject, newKey, Object.getOwnPropertyDescriptor(storeDataObject, oldKey));
         }
@@ -525,7 +514,6 @@ const RemoveFromStorage = (index) => {
     if(indexStep < 0) { indexStep = 0; }
     localStorage.setItem("stepIndex", indexStep);
     localStorage.setItem("saveIndex", saveIndex);
-    console.log(storeDataObject);
     localStorage.setItem("GIFnames", JSON.stringify(storeDataObject));
     populateFromStorage(false);
 }
@@ -559,7 +547,6 @@ window.onload = () => {
     });
 
     GetLocalData();
-    console.log(indexStep);
     if(indexStep > 0) { AppendGifFromStorage(0); }
 }
 

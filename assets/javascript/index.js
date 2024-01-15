@@ -173,6 +173,12 @@ const GenerateContentButtons = () => {
     trendingEl.textContent = "Search Top 10!";
     trendingLabelEl.textContent = "Trending: ";
 
+    userInputDiv.classList.add("search-bar");
+    userInputDiv.classList.add("pure-g");
+    selectorContainerEl.classList.add("pure-u-sm-1");
+    inputContainerEl.classList.add("pure-u-sm-1");
+    trendingContainerEl.classList.add("pure-u-sm-1");
+
     buttonEl.textContent = "Search!";
     buttonEl.classList.add("search-button");
     buttonEl.classList.add("custom-button");
@@ -367,11 +373,32 @@ const WriteToCanvas = (input, index) => {
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
     ctx.textBaseLine = "center";
-    //ctx.scale(scaleX, scaleX);
-    //console.log(scaleX + " : " + scaleY);
-    ctx.fillText(input, xSize*0.5, (ySize*0.95));
 
-    SaveCanvasImage();
+    //create if statement to divide string up based on length and populate below. 
+    //Part 1 populates only if it's 3 parts, part 2 always populates, part 3 populates only if its 2 or more parts
+    if (input.length < 40) {
+        let inputPart1 = input;
+        ctx.fillText(inputPart1, xSize*0.5, (ySize*0.91),measure.width);
+    } else if (input.length < 80) {
+        //need to account for last space
+        const strLen = input.length / 2;
+        let lastSpaceBeforeBreak = input.lastIndexOf(' ', strLen);
+        const inputPart1 = input.substring(0, lastSpaceBeforeBreak);
+        const inputPart2 = input.substring(lastSpaceBeforeBreak, input.length);
+        ctx.fillText(inputPart1, xSize*0.5, (ySize*0.91),measure.width);
+        ctx.fillText(inputPart2, xSize*0.5, (ySize*0.97),measure.width);
+    } else {
+        const strLen = input.length / 3;
+        let lastSpaceBeforeBreak = input.lastIndexOf(' ', strLen);
+        let nextSpaceBeforeBreak = input.lastIndexOf(' ', strLen * 2);
+        const inputPart1 = input.substring(0, lastSpaceBeforeBreak);
+        const inputPart2 = input.substring(lastSpaceBeforeBreak, nextSpaceBeforeBreak);
+        const inputPart3 = input.substring(nextSpaceBeforeBreak, input.length);
+        ctx.fillText(inputPart1, xSize*0.5, (ySize*0.85),measure.width);
+        ctx.fillText(inputPart2, xSize*0.5, (ySize*0.91),measure.width);
+        ctx.fillText(inputPart3, xSize*0.5, (ySize*0.97),measure.width);
+    }
+    SaveFromCanvas();
 }
 
 const SaveCanvasImage = () => {
@@ -508,8 +535,7 @@ const RemoveFromStorage = (index) => {
             Object.defineProperty(storeDataObject, newKey, Object.getOwnPropertyDescriptor(storeDataObject, oldKey));
         }
     }
-    
-    delete storeDataObject[Object.keys(storeDataObject).length-1];
+      delete storeDataObject[Object.keys(storeDataObject).length-1];
     indexStep--;
     if(indexStep < 0) { indexStep = 0; }
     localStorage.setItem("stepIndex", indexStep);
@@ -517,6 +543,19 @@ const RemoveFromStorage = (index) => {
     localStorage.setItem("GIFnames", JSON.stringify(storeDataObject));
     populateFromStorage(false);
 }
+
+const SaveFromCanvas = () => {
+    var downloadBtnEl = document.querySelector("#download-png-button");
+    saveParam = "image/" + optionEl.value;
+    var saveIMG = canvasEl.toDataURL(saveParam);
+    var saveName = "";
+    saveName = "chuck-yeezy-meme-" + saveIndex;
+
+    downloadBtnEl.href = saveIMG;
+    downloadBtnEl.setAttribute("download", saveName);
+}
+    
+
 
 const SanitizeString = (input) => {
     const splitArray = input.split(" ");

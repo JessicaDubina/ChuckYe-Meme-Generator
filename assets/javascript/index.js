@@ -403,7 +403,6 @@ const WriteToCanvas = (input, index) => {
 }
 
 const SaveCanvasImage = () => {
-    console.log(downloadBtnEl);
     saveParam = "image/" + optionEl.value;
     var saveIMG = canvasEl.toDataURL(saveParam);
     var saveName = "chuck-yeezy-meme-" + saveIndex;
@@ -583,7 +582,6 @@ downloadBtnEl.addEventListener("click", function() {
 
 optionEl.addEventListener("change", () => {
     saveParam = "image/" + optionEl.value;
-    console.log(saveParam);
 });
 
 chuckSelectEl.addEventListener("click", function() {

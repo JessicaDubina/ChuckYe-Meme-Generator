@@ -219,6 +219,10 @@ input {
   background-color: var(--brown-color);
 }
 
+#chuck-quote {
+  color: var(--cream-color);
+}
+
 #chuck-select {
   background-color: var(--brown-color);
   border: .1rem solid var(--pink-color);
@@ -236,6 +240,7 @@ input {
 
 .bottom-section .color2 {
   background-color: var(--brown-color);
+  color: var(--cream-color);
 }
 
 .quote-select {

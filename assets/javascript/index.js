@@ -7,6 +7,7 @@ let chuckSelectEl = document.querySelector("#chuck-select");
 let kanyeSelectEl = document.querySelector("#kanye-select");
 let bottomSectionEl = document.querySelector(".bottom-section");
 let optionEl = document.querySelector(".download-options");
+let downloadBtnEl = document.querySelector("#download-png-button");
 
 let dataCategoryNames = {
     0: "actions",
@@ -398,11 +399,11 @@ const WriteToCanvas = (input, index) => {
         ctx.fillText(inputPart2, xSize*0.5, (ySize*0.91),measure.width);
         ctx.fillText(inputPart3, xSize*0.5, (ySize*0.97),measure.width);
     }
-    SaveFromCanvas();
+    SaveCanvasImage();
 }
 
 const SaveCanvasImage = () => {
-    var downloadBtnEl = document.querySelector("#download-png-button");
+    console.log(downloadBtnEl);
     saveParam = "image/" + optionEl.value;
     var saveIMG = canvasEl.toDataURL(saveParam);
     var saveName = "chuck-yeezy-meme-" + saveIndex;
@@ -544,19 +545,6 @@ const RemoveFromStorage = (index) => {
     populateFromStorage(false);
 }
 
-const SaveFromCanvas = () => {
-    var downloadBtnEl = document.querySelector("#download-png-button");
-    saveParam = "image/" + optionEl.value;
-    var saveIMG = canvasEl.toDataURL(saveParam);
-    var saveName = "";
-    saveName = "chuck-yeezy-meme-" + saveIndex;
-
-    downloadBtnEl.href = saveIMG;
-    downloadBtnEl.setAttribute("download", saveName);
-}
-    
-
-
 const SanitizeString = (input) => {
     const splitArray = input.split(" ");
     let build = "";
@@ -589,8 +577,13 @@ window.onload = () => {
     if(indexStep > 0) { AppendGifFromStorage(0); }
 }
 
+downloadBtnEl.addEventListener("click", function() {
+    SaveCanvasImage();
+});
+
 optionEl.addEventListener("change", () => {
     saveParam = "image/" + optionEl.value;
+    console.log(saveParam);
 });
 
 chuckSelectEl.addEventListener("click", function() {

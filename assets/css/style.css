@@ -140,7 +140,7 @@ a:hover,a.active{
   padding: 0 1rem;
 }
 
-.custom-button :hover {
+.custom-button:hover {
   background-color: var(--pink-color);
   color: var(--cream-color);
   transition-duration: 1s;
